@@ -1,6 +1,6 @@
 
 export const AxisLeft = (
-    { yScale, pixelsPerTick, boundsWidth, label, units, grid = false, TICK_LENGTH = 4 }) => {
+    { yScale, pixelsPerTick, boundsWidth, label, units, grid = false, TICK_LENGTH = 4, axisLine=true }) => {
     
     const range = yScale.range();
     const height = range[0] - range[1];
@@ -8,13 +8,13 @@ export const AxisLeft = (
 
     return (
         <>
-            <line y1={range[0]} y2={range[1]} stroke="black"/>
+            {axisLine && ( <line y1={range[0]} y2={range[1]} stroke="black"/> )}
             {yScale.ticks(numberOfTicksTarget).map((value) => (
                 <g key={value} transform={`translate(0, ${yScale(value)})`}>
                     {/* Grid line */}
                     {grid && ( <line x2={boundsWidth} stroke="lightgrey" opacity={0.5} /> )}
                     {/* Tick */}
-                    <line x2={- TICK_LENGTH} stroke="black" />
+                    {axisLine && ( <line x2={- TICK_LENGTH} stroke="black" /> )}
                     <text
                         style={{
                             fontSize: "14px",
