@@ -18,30 +18,43 @@ export const ResponsiveLineChart = (props) => {
     );
 };
 
-const LineChart = ({ width, height, data, MARGIN }) => {
+const LineChart = ({ width, height, data, columns, colors, MARGIN }) => {
 
     const boundsWidth = width - MARGIN.left - MARGIN.right;
     const boundsHeight = height - MARGIN.top - MARGIN.bottom;
     const pixelsPerTick = 100;
 
-    // Convert TWh to PWh
-    const dataPWh = data.map(item => ({ ...item, coal: item.coal / 1000 }));
-
-    // build the scales and axes    
+    // build the scales    
     const xScale = d3.scaleLinear()
-        .domain([Math.min(...dataPWh.map(d => d.year)), Math.max(...dataPWh.map(d => d.year))])
+        .domain([Math.min(...data.map(d => d.year)), Math.max(...data.map(d => d.year))])
         .range([0, boundsWidth]);
+    
+    const allValues = data.flatMap(d => columns.map(col => d[col]));
     const yScale = d3.scaleLinear().
-        domain([Math.min(...dataPWh.map(d => d.coal)), Math.max(...dataPWh.map(d => d.coal))]).
+        domain([Math.min(...allValues), Math.max(...allValues)]).
         range([boundsHeight, 0]);
 
     // build the lines
-    const lineBuilder = d3
-        .line()
-        .x((d) => xScale(d.year))
-        .y((d) => yScale(d.coal));
-    
-    const linePath = lineBuilder(dataPWh);
+
+    // create a path for each energy type (each "column")
+    const lines = columns.map(col => ({
+        column: col,
+        path: d3.line()
+            .x(d => xScale(d.year))
+            .y(d => yScale(d[col]))(data) // equivalent to linebuilder=d3.line().blabla + line = linebuilder(data)
+    }));
+
+    const allLines = lines.map(({ column, path }) => (
+        <g key={column}>
+            <path
+                d={path}
+                stroke={colors[column] || "black"}
+                fill="none"
+                strokeWidth={3}
+            />
+        </g>
+    ));
+
 
     return (
         <div>
@@ -53,22 +66,17 @@ const LineChart = ({ width, height, data, MARGIN }) => {
                         pixelsPerTick={pixelsPerTick}
                         boundsWidth={boundsWidth}
                         units="PWh"
-                        grid="true"
                     />
                     <g transform={`translate(0,${boundsHeight})`}>
                         <AxisBottom
                             xScale={xScale}
                             pixelsPerTick={pixelsPerTick}
                             boundsHeight={boundsHeight}
+                            axisLine={false}
                         />
                     </g>
                     {/* render all the <path>*/}
-                    <path
-                        d={linePath}
-                        stroke="#9a6fb0"
-                        fill="none"
-                        strokeWidth={2}
-                    />
+                    {allLines}
                 </g>
             </svg>
         </div>
