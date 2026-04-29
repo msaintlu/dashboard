@@ -50,7 +50,7 @@ const StackedAreaGraph = ({ width, height, data, columns, colors, MARGIN }) => {
             <path
                 key={i}
                 d={path}
-                fill={colors[columns[i]] || "black"}
+                fill={colors[serie.key] || "black"}
             />
         );
     });
