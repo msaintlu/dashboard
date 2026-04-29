@@ -2,6 +2,7 @@ import {data} from "./data";
 import { ResponsiveLineChart } from "./vizcomponents/Linechart";
 import { ResponsiveStackedAreaGraph } from "./vizcomponents/StackedAreaGraph";
 import { ResponsivePercentStackedBarchart } from "./vizcomponents/PercentStackedBarchart";
+import { ResponsiveCircularBarplot } from "./vizcomponents/CircularBarplot";
 
 const MARGIN = { top: 50, right: 50, bottom: 70, left: 70 };
 
@@ -20,6 +21,9 @@ const colors = {
 // Name of energy type columns
 const energyTypes = ["coal", "oil", "gas", "nuclear", "biofuel", "hydro", "solar", "wind", "other_renewable"];
 
+// Non fossil energies
+const nonFossilEnergyTypes = ["nuclear", "biofuel", "hydro", "solar", "wind", "other_renewable"];
+
 // Convert TWh to PWh
 const dataPWh = data.map(item => ({ ...item, 
   ...Object.fromEntries(energyTypes.map(col => [col, item[col] / 1000])) }));
@@ -29,27 +33,35 @@ const worldData = dataPWh.filter(d => d.country === "World");
 
 // 2024 data
 const data2024 = data.filter(d => d.year === 2024);
+const worldData2024 = worldData.filter(d => d.year === 2024);
 
 function App() {
 
-  return (
-    <div style={{ display: "flex", height: 750 }}>
-      <div style={{ width: "33%", backgroundColor: "none" }}>
+  return ( // Rien à faire j'arrive pas à faire mon layout, demander à l'IA aussi, j'en ai marre
+    <div style={{ display: "flex", height: 750 }}> 
+      <div style={{ width: "33%", height: "100%", backgroundColor: "none" }}>
         <ResponsivePercentStackedBarchart
           data={data2024}
           columns={energyTypes}
           colors={colors}
           MARGIN={{ top: 50, right: 50, bottom: 70, left: 170 }} />
       </div> 
-      <div style={{width: "66%"}}>
-        <div style={{height: "50%", backgroundColor: "none"}}>
-          <ResponsiveLineChart 
-            data={worldData} 
-            columns={energyTypes} 
-            colors={colors} 
+      <div style={{ width: "66%", height: "100%", backgroundColor: "none" }}>
+        <div style={{ width: "50%", height: "50%", backgroundColor: "none" }}>
+          <ResponsiveLineChart
+            data={worldData}
+            columns={nonFossilEnergyTypes}
+            colors={colors}
             MARGIN={MARGIN} />
         </div>
-        <div style={{height: "50%", backgroundColor: "none"}}>
+        <div style={{ width: "50%", height: "50%", backgroundColor: "none" }}>
+          <ResponsiveCircularBarplot
+            data={worldData2024}
+            columns={energyTypes}
+            colors={colors}
+            MARGIN={MARGIN} />
+        </div>
+        <div style={{ width: "100%", height: "50%", backgroundColor: "none"}}>
           <ResponsiveStackedAreaGraph 
             data={worldData} 
             columns={energyTypes} 

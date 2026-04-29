@@ -57,29 +57,27 @@ const StackedAreaGraph = ({ width, height, data, columns, colors, MARGIN }) => {
 
 
     return (
-        <div>
-            <svg width={width} height={height}>
-                <g transform={`translate(${MARGIN.left},${MARGIN.top})`}>
-                    {/* render axes*/}
-                    <AxisLeft
-                        yScale={yScale}
+        <svg width={width} height={height}>
+            <g transform={`translate(${MARGIN.left},${MARGIN.top})`}>
+                {/* render axes*/}
+                <AxisLeft
+                    yScale={yScale}
+                    pixelsPerTick={pixelsPerTick}
+                    boundsWidth={boundsWidth}
+                    units="PWh"
+                    axisLine={false}
+                />
+                <g transform={`translate(0,${boundsHeight})`}>
+                    <AxisBottom
+                        xScale={xScale}
                         pixelsPerTick={pixelsPerTick}
-                        boundsWidth={boundsWidth}
-                        units="PWh"
+                        boundsHeight={boundsHeight}
                         axisLine={false}
                     />
-                    <g transform={`translate(0,${boundsHeight})`}>
-                        <AxisBottom
-                            xScale={xScale}
-                            pixelsPerTick={pixelsPerTick}
-                            boundsHeight={boundsHeight}
-                            axisLine={false}
-                        />
-                    </g>
-                    {/* render all the <path>*/}
-                    {allPath}
                 </g>
-            </svg>
-        </div>
+                {/* render all the <path>*/}
+                {allPath}
+            </g>
+        </svg>
     );
 };

@@ -1,8 +1,7 @@
 import * as d3 from "d3";
 import {useRef} from "react";
 import {useDimensions} from "./useDimensions";
-import {AxisBottom} from "./AxisBottom";
-import {AxisLeft} from "./AxisLeft";
+
 
 export const ResponsivePercentStackedBarchart = (props) => {
     const chartRef = useRef(null);
@@ -46,7 +45,8 @@ const PercentStackedBarchart = ({ width, height, data, columns, colors, MARGIN }
     const yScale = d3.scaleBand()
         .domain(data.map(d => d.country))
         .range([0, boundsHeight])
-        .padding(0.1);
+        .paddingInner(0.1)
+        .paddingOuter(0);
 
     // Build the bars (segments)
     const allBars = series.map((serie, i) => {   // series is an array, one item per energy type here
@@ -75,18 +75,14 @@ const PercentStackedBarchart = ({ width, height, data, columns, colors, MARGIN }
                 )}
             </g>
         ));
-    });//.flat(); // Aplatir le tableau de tableaux
+    });
 
     return (
-        <div>
-            <svg width={width} height={height}>
-                <g transform={`translate(${MARGIN.left},${MARGIN.top})`}>
-                    {/* render axes*/}
-
-                    {/* render all the <path>*/}
-                    {allBars}
-                </g>
-            </svg>
-        </div>
+        <svg width={width} height={height}>
+            <g transform={`translate(${MARGIN.left},${MARGIN.top})`}>
+                {/* render all the <path>*/}
+                {allBars}
+            </g>
+        </svg>
     );
 };

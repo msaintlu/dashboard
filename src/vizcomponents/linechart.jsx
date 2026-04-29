@@ -53,7 +53,6 @@ const LineChart = ({ width, height, data, columns, colors, MARGIN }) => {
     });
 
     return (
-        <div>
             <svg width={width} height={height}>
                 <g transform={`translate(${MARGIN.left},${MARGIN.top})`}>
                     {/* render axes*/}
@@ -76,6 +75,5 @@ const LineChart = ({ width, height, data, columns, colors, MARGIN }) => {
                     {allPath}
                 </g>
             </svg>
-        </div>
     );
 };
