@@ -44,7 +44,7 @@ export const AxisLeft = (
                 <text
                     x={10}
                     y={0}
-                    fontSize={20}
+                    fontSize={14}
                 >
                     {units}
                 </text>

@@ -52,7 +52,7 @@ function App() {
   return (
     <div style={{ display: "flex", height: 750 }}>
       {/* Colonne de gauche (33%) */}
-      <div style={{ width: "33%", height: "100%" }}>
+      <div style={{ width: "40%", height: "100%" }}>
         <ResponsivePercentStackedBarchart
           data={data2024}
           columns={energyTypes}
@@ -64,7 +64,7 @@ function App() {
       {/* Colonne de droite (66%) */}
       <div
         style={{
-          width: "66%",
+          width: "60%",
           height: "100%",
           display: "flex",
           flexDirection: "column",
@@ -72,21 +72,20 @@ function App() {
       >
         {/* Ligne du haut (50% de la hauteur) */}
         <div style={{ height: "50%", display: "flex" }}>
-          <div style={{ width: "50%", height: "100%" }}>
-            <ResponsiveLineChart
-              data={worldData}
-              columns={nonFossilEnergyTypes}
-              colors={colors}
-              MARGIN={MARGIN}
-              labels={energyLabels}
-            />
-          </div>
-          <div style={{ width: "50%", height: "100%" }}>
+          <div style={{ width: "40%", height: "100%" }}>
             <ResponsiveCircularBarplot
               data={worldData2024}
               columns={energyTypes}
               colors={colors}
               MARGIN={{ top: 50, right: 50, bottom: 50, left: 50 }}
+            />
+          </div>
+          <div style={{ width: "60%", height: "100%" }}>
+            <ResponsiveLineChart
+              data={worldData}
+              columns={nonFossilEnergyTypes}
+              colors={colors}
+              MARGIN={{ top: 50, right: 50, bottom: 70, left: 70 }}
             />
           </div>
         </div>
@@ -97,7 +96,7 @@ function App() {
             data={worldData}
             columns={energyTypes}
             colors={colors}
-            MARGIN={MARGIN}
+            MARGIN={{ top: 50, right: 50, bottom: 70, left: 70 }}
           />
         </div>
       </div>

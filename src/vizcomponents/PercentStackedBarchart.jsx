@@ -53,7 +53,6 @@ const PercentStackedBarchart = ({ width, height, data, columns, colors, MARGIN }
         return serie.map((segment, j) => (    // each serie is in the form [[38, 57, data: {…}], [38, 78, data: {…}]..., key: 'coal', index: 1]
             <g key={`${i}-${j}`}>
                 <rect
-                    key={`${i}-${j}`}
                     x={xScale(segment[0])}
                     y={yScale(segment.data.country)}
                     width={xScale(segment[1]) - xScale(segment[0])}

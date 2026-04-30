@@ -44,23 +44,24 @@ const LineChart = ({ width, height, data, columns, colors, MARGIN, labels }) => 
         return (
             <g key={i}>
                 <path
-                    key={i}
                     d={linePath}
                     stroke={colors[col] || "black"}
                     fill="none"
                     strokeWidth={3}
                 />
-                <g key={col} transform={`translate(${boundsWidth + 8}, ${yScale(labelY)})`}>
-                    <text
-                        style={{
-                            fontSize: "14px",
-                            textAnchor: "start",
-                            dominantBaseline: "middle",
-                        }}
-                    >
-                        {labels[col]}
-                    </text>
-                </g>
+                {labels && (
+                    <g transform={`translate(${boundsWidth + 8}, ${yScale(labelY)})`}>
+                        <text
+                            style={{
+                                fontSize: "14px",
+                                textAnchor: "start",
+                                dominantBaseline: "middle",
+                            }}
+                        >
+                            {labels[col]}
+                        </text>
+                    </g>
+                )}
             </g>
         );
     });

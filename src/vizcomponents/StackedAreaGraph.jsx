@@ -47,12 +47,13 @@ const StackedAreaGraph = ({ width, height, data, columns, colors, MARGIN }) => {
     const allPath = series.map((serie, i) => {
         const path = areaBuilder(serie);
         return (
-            <path
-                key={i}
-                d={path}
-                fill={colors[serie.key] || "black"}
-            />
-        );
+            <g key={i}>
+                <path
+                    d={path}
+                    fill={colors[serie.key] || "black"}
+                />
+             </g>
+       );
     });
 
 
