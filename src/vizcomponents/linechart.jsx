@@ -18,7 +18,7 @@ export const ResponsiveLineChart = (props) => {
     );
 };
 
-const LineChart = ({ width, height, data, columns, colors, MARGIN }) => {
+const LineChart = ({ width, height, data, columns, colors, MARGIN, labels }) => {
 
     const boundsWidth = width - MARGIN.left - MARGIN.right;
     const boundsHeight = height - MARGIN.top - MARGIN.bottom;
@@ -40,40 +40,53 @@ const LineChart = ({ width, height, data, columns, colors, MARGIN }) => {
             .x(d => xScale(d.year))
             .y(d => yScale(d[col]));
         const linePath = lineBuilder(data);
+        const labelY = data.filter((d) => d.year === 2024).map((d) => d[col])[0];
         return (
-            <path
-                key={i}
-                d={linePath}
-                stroke={colors[col] || "black"}
-                fill="none"
-                strokeWidth={3}
-            />
-
+            <g key={i}>
+                <path
+                    key={i}
+                    d={linePath}
+                    stroke={colors[col] || "black"}
+                    fill="none"
+                    strokeWidth={3}
+                />
+                <g key={col} transform={`translate(${boundsWidth + 8}, ${yScale(labelY)})`}>
+                    <text
+                        style={{
+                            fontSize: "14px",
+                            textAnchor: "start",
+                            dominantBaseline: "middle",
+                        }}
+                    >
+                        {labels[col]}
+                    </text>
+                </g>
+            </g>
         );
     });
 
     return (
-            <svg width={width} height={height}>
-                <g transform={`translate(${MARGIN.left},${MARGIN.top})`}>
-                    {/* render axes*/}
-                    <AxisLeft
-                        yScale={yScale}
+        <svg width={width} height={height}>
+            <g transform={`translate(${MARGIN.left},${MARGIN.top})`}>
+                {/* render axes*/}
+                <AxisLeft
+                    yScale={yScale}
+                    pixelsPerTick={pixelsPerTick}
+                    boundsWidth={boundsWidth}
+                    units="PWh"
+                    axisLine={false}
+                />
+                <g transform={`translate(0,${boundsHeight})`}>
+                    <AxisBottom
+                        xScale={xScale}
                         pixelsPerTick={pixelsPerTick}
-                        boundsWidth={boundsWidth}
-                        units="PWh"
+                        boundsHeight={boundsHeight}
                         axisLine={false}
                     />
-                    <g transform={`translate(0,${boundsHeight})`}>
-                        <AxisBottom
-                            xScale={xScale}
-                            pixelsPerTick={pixelsPerTick}
-                            boundsHeight={boundsHeight}
-                            axisLine={false}
-                        />
-                    </g>
-                    {/* render all the <path>*/}
-                    {allPath}
                 </g>
-            </svg>
-    );
+                {/* render all the <path>*/}
+                {allPath}
+            </g>
+        </svg>
+);
 };

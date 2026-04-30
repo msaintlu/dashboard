@@ -6,17 +6,29 @@ import { ResponsiveCircularBarplot } from "./vizcomponents/CircularBarplot";
 
 const MARGIN = { top: 50, right: 50, bottom: 70, left: 70 };
 
-const colors = { 
-  coal            : "#6C6460", // Dim grey
-  oil             : "#837A75", // Grey
-  gas             : "#A9A19E", // Silver
-  nuclear         : "#611A40", // Crimson violet
-  hydro           : "#1A4C3A", // Pine teal 
-  solar           : "#2A7A5C", // Jungle teal
-  wind            : "#39A77F", // Seaweed
-  biofuel         : "#997143", // Toffee brown
-  other_renewable : "#76D0AF"  // Turquoise
-  };
+const colors = {
+  coal: "#6C6460", // Dim grey
+  oil: "#837A75", // Grey
+  gas: "#A9A19E", // Silver
+  nuclear: "#611A40", // Crimson violet
+  hydro: "#1A4C3A", // Pine teal
+  solar: "#2A7A5C", // Jungle teal
+  wind: "#39A77F", // Seaweed
+  biofuel: "#997143", // Toffee brown
+  other_renewable: "#76D0AF", // Turquoise
+};
+
+const energyLabels = {
+  coal: "Coal",
+  oil: "Oil",
+  gas: "Gas",
+  nuclear: "Nuclear",
+  hydro: "Hydro",
+  solar: "Solar",
+  wind: "Wind",
+  biofuel: "Biofuels",
+  other_renewable: "Other renewable",
+};
 
 // Name of energy type columns
 const energyTypes = ["coal", "oil", "gas", "nuclear", "biofuel", "hydro", "solar", "wind", "other_renewable"];
@@ -33,44 +45,64 @@ const worldData = dataPWh.filter(d => d.country === "World");
 
 // 2024 data
 const data2024 = data.filter(d => d.year === 2024);
-const worldData2024 = worldData.filter(d => d.year === 2024);
+const worldData2024 = worldData.filter(d => d.year === 2024)[0]; // [0] bc only one line
 
 function App() {
 
-  return ( // Rien à faire j'arrive pas à faire mon layout, demander à l'IA aussi, j'en ai marre
-    <div style={{ display: "flex", height: 750 }}> 
-      <div style={{ width: "33%", height: "100%", backgroundColor: "none" }}>
+  return (
+    <div style={{ display: "flex", height: 750 }}>
+      {/* Colonne de gauche (33%) */}
+      <div style={{ width: "33%", height: "100%" }}>
         <ResponsivePercentStackedBarchart
           data={data2024}
           columns={energyTypes}
           colors={colors}
-          MARGIN={{ top: 50, right: 50, bottom: 70, left: 170 }} />
-      </div> 
-      <div style={{ width: "66%", height: "100%", backgroundColor: "none" }}>
-        <div style={{ width: "50%", height: "50%", backgroundColor: "none" }}>
-          <ResponsiveLineChart
-            data={worldData}
-            columns={nonFossilEnergyTypes}
-            colors={colors}
-            MARGIN={MARGIN} />
+          MARGIN={{ top: 50, right: 50, bottom: 70, left: 170 }}
+        />
+      </div>
+
+      {/* Colonne de droite (66%) */}
+      <div
+        style={{
+          width: "66%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        {/* Ligne du haut (50% de la hauteur) */}
+        <div style={{ height: "50%", display: "flex" }}>
+          <div style={{ width: "50%", height: "100%" }}>
+            <ResponsiveLineChart
+              data={worldData}
+              columns={nonFossilEnergyTypes}
+              colors={colors}
+              MARGIN={MARGIN}
+              labels={energyLabels}
+            />
+          </div>
+          <div style={{ width: "50%", height: "100%" }}>
+            <ResponsiveCircularBarplot
+              data={worldData2024}
+              columns={energyTypes}
+              colors={colors}
+              MARGIN={{ top: 50, right: 50, bottom: 50, left: 50 }}
+            />
+          </div>
         </div>
-        <div style={{ width: "50%", height: "50%", backgroundColor: "none" }}>
-          <ResponsiveCircularBarplot
-            data={worldData2024}
+
+        {/* Ligne du bas (50% de la hauteur) */}
+        <div style={{ height: "50%" }}>
+          <ResponsiveStackedAreaGraph
+            data={worldData}
             columns={energyTypes}
             colors={colors}
-            MARGIN={MARGIN} />
-        </div>
-        <div style={{ width: "100%", height: "50%", backgroundColor: "none"}}>
-          <ResponsiveStackedAreaGraph 
-            data={worldData} 
-            columns={energyTypes} 
-            colors={colors} 
-            MARGIN={MARGIN} />
+            MARGIN={MARGIN}
+          />
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default App

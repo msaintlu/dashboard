@@ -18,52 +18,54 @@ export const ResponsiveCircularBarplot = (props) => {
     );
 };
 
-const CircularBarplot = ({ width, height, data, columns, colors, MARGIN }) => {
-
+const CircularBarplot = ({ width, height, data, columns, colors, MARGIN}) => {
     const boundsWidth = width - MARGIN.left - MARGIN.right;
-    const boundsHeight = height - MARGIN.top - MARGIN.bottom;  
+    const boundsHeight = height - MARGIN.top - MARGIN.bottom;
 
-    const innerRadius = 0;
-    const outerRadius = Math.min(width, height) / 2;
+    const innerRadius = 30;
+    const outerRadius = Math.min(boundsWidth, boundsHeight) / 2;
 
-    // build the scales    
+    // build the scales
     const xScale = d3.scaleBand()
         .domain(columns)
         .range([0, 2 * Math.PI])
-        .padding(0.2)
-    
+        .padding(0.3);
+
+    const maxValue = d3.max(columns, (col) => data[col]);
     const yScale = d3.scaleRadial()
-        .domain([0, d3.max(data.flatMap(d => columns.map(col => d[col])))])
+        .domain([0, maxValue])
         .range([innerRadius, outerRadius]);
-        
+
     // Build the "bars"
     const arcPathGenerator = d3.arc();
-    const allShapes = columns.map((col, i) => { // Je pense que là la boucle est pas sur le bon truc. Demander à l'IA de me corriger ce code, en lui disant ce que j'ai fait d'abord comme filtre sur data
+        
+    const allShapes = columns.map((col, i) => {
         const path = arcPathGenerator({
             innerRadius: innerRadius,
             outerRadius: yScale(data[col]),
             startAngle: xScale(col),
             endAngle: xScale(col) + xScale.bandwidth(),
+            padAngle: 0.01,
         });
         return (
             <g key={i}>
                 <path
                     d={path}
                     stroke="none"
-                    fill="#9d174d"
+                    fill={colors[col] || "#9d174d"}
                     rx={1}
                 />
             </g>
         );
     });
 
-   return (
+    return (
         <div>
             <svg width={width} height={height}>
-               <g transform={`translate(${width/2+MARGIN}, ${height/2+MARGIN})`}>
-                   {allShapes}
-               </g>
+                <g transform={`translate( ${width/2}, ${height/2} )`} >
+                    {allShapes}
+                </g>
             </svg>
         </div>
     );
-};
+};;
