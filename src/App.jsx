@@ -77,7 +77,7 @@ function App() {
               data={worldData2024}
               columns={energyTypes}
               colors={colors}
-              MARGIN={{ top: 110, right: 50, bottom: 50, left: 50 }}
+              MARGIN={{ top: 80, right: 50, bottom: 50, left: 50 }}
               labels = {energyLabels}
             />
           </div>

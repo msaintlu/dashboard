@@ -21,7 +21,7 @@ const Donut = ({ width, height, data, columns, colors, MARGIN, labels }) => {
   const boundsWidth = width - MARGIN.left - MARGIN.right;
   const boundsHeight = height - MARGIN.top - MARGIN.bottom;
 
-  const innerRadius = 30;
+  const innerRadius = 40;
   const outerRadius = Math.min(boundsWidth, boundsHeight) / 2;
   const INFLEXION_PADDING = 10; // default space between donut and label inflexion point
   const LABEL_PADDING = 10; // space between inflexion point and label
@@ -51,12 +51,10 @@ const Donut = ({ width, height, data, columns, colors, MARGIN, labels }) => {
     const centroid = arcPathGenerator.centroid(sliceExtInfo); // [x,y] position of the centroid
     // Second arc for the legend segment inflexion point
     const inflexionPadding =
-        p.data === "biofuel"
-        ? 58
-        : p.data === "other_renewable"
-        ? 42
+        p.data === "other_renewable"
+        ? 30
         : p.data === "solar"
-        ? 28
+        ? 30
         : p.data === "wind"
         ? 18
         : INFLEXION_PADDING;
@@ -69,7 +67,8 @@ const Donut = ({ width, height, data, columns, colors, MARGIN, labels }) => {
     const inflexionPoint = arcPathGenerator.centroid(inflexionInfo);
 
     // Labels
-    const isRightLabel = inflexionPoint[0] > 0;
+    const isRightLabel = inflexionPoint[0] > -boundsWidth/14;
+    console.log(-boundsWidth / 14);
     const labelPosX = inflexionPoint[0] + LABEL_PADDING * (isRightLabel ? 1 : -1);
     const textAnchor = isRightLabel ? "start" : "end";
     const label = labels[p.data]; //+ " (" + p.value + ")";
@@ -84,7 +83,7 @@ const Donut = ({ width, height, data, columns, colors, MARGIN, labels }) => {
           stroke={"black"}
           fill={colors[p.data]}
         />
-        <circle cx={centroid[0]} cy={centroid[1]} r={2} fill={colors[p.data]} />
+        <circle cx={centroid[0]} cy={centroid[1]} r={3} fill={colors[p.data]} />
         <line
           x1={inflexionPoint[0]}
           y1={inflexionPoint[1]}
