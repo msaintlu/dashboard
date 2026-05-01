@@ -16,3 +16,69 @@
     -webkit-text-size-adjust: 100%;
   }
 }
+
+/* Layout par défaut (écran large) */
+.main-container {
+  display: flex;
+  height: 700px;
+}
+
+.left-column {
+  width: 40%;
+  height: 100%;
+}
+
+.right-column {
+  width: 60%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-row {
+  height: 50%;
+  display: flex;
+}
+
+.top-left {
+  width: 40%;
+  height: 100%;
+}
+
+.top-right {
+  width: 60%;
+  height: 100%;
+}
+
+.bottom-row {
+  height: 50%;
+}
+
+/* Layout pour écran étroit (< 900px) */
+@media (max-width: 900px) {
+  .main-container {
+    flex-direction: column;
+    height: auto; /* Hauteur automatique pour éviter les superpositions */
+  }
+
+  .left-column,
+  .right-column {
+    width: 100%;
+    height: auto; /* Hauteur automatique */
+  }
+
+  .top-row {
+    flex-direction: column; /* Les deux divs du haut s'empilent */
+    height: auto;
+  }
+
+  .top-left,
+  .top-right {
+    width: 100%;
+    height: 50vh; /* Chaque composant prend la moitié de la hauteur de l'écran */
+  }
+
+  .bottom-row {
+    height: 50vh; /* Le composant du bas prend la moitié de la hauteur */
+  }
+}

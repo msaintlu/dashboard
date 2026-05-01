@@ -4,17 +4,17 @@ import {useDimensions} from "./useDimensions";
 
 
 export const ResponsiveDonut = (props) => {
-    const chartRef = useRef(null);
-    const chartSize = useDimensions(chartRef);
-    return (
-        <div ref={chartRef} style={{ width: '100%', height: '100%' }}>
-            <Donut
-                height={chartSize.height}
-                width={chartSize.width}
-                {...props} // pass all the props
-            />
-        </div>
-    );
+  const chartRef = useRef(null);
+  const chartSize = useDimensions(chartRef);
+  return (
+    <div ref={chartRef} style={{ width: '100%', height: '100%' }}>
+      <Donut
+        height={chartSize.height}
+        width={chartSize.width}
+        {...props} // pass all the props
+      />
+    </div>
+  );
 };
 
 const Donut = ({ width, height, data, columns, colors, MARGIN, labels }) => {
@@ -32,6 +32,7 @@ const Donut = ({ width, height, data, columns, colors, MARGIN, labels }) => {
   const arcPathGenerator = d3.arc();
 
   const arcs = pie.map((p, i) => {
+
     const sliceInfo = {
       innerRadius: innerRadius,
       outerRadius: outerRadius,
@@ -49,9 +50,10 @@ const Donut = ({ width, height, data, columns, colors, MARGIN, labels }) => {
       endAngle: p.endAngle,
     };
     const centroid = arcPathGenerator.centroid(sliceExtInfo); // [x,y] position of the centroid
+
     // Second arc for the legend segment inflexion point
     const inflexionPadding =
-        p.data === "other_renewable"
+      p.data === "other_renewable"
         ? 30
         : p.data === "solar"
         ? 30
@@ -65,10 +67,16 @@ const Donut = ({ width, height, data, columns, colors, MARGIN, labels }) => {
       endAngle: p.endAngle,
     };
     const inflexionPoint = arcPathGenerator.centroid(inflexionInfo);
+    const inflexionInfo_other_renewable = {
+      innerRadius: outerRadius + inflexionPadding,
+      outerRadius: outerRadius + inflexionPadding,
+      startAngle: pie.filter((p) => p.data === "other_renewable")[0].startAngle,
+      endAngle: pie.filter((p) => p.data === "other_renewable")[0].endAngle,
+    };
+    const inflexionPoint_other_renewable = arcPathGenerator.centroid(inflexionInfo_other_renewable);
 
     // Labels
-    const isRightLabel = inflexionPoint[0] > -boundsWidth/14;
-    console.log(-boundsWidth / 14);
+    const isRightLabel = inflexionPoint[0] >= inflexionPoint_other_renewable[0];
     const labelPosX = inflexionPoint[0] + LABEL_PADDING * (isRightLabel ? 1 : -1);
     const textAnchor = isRightLabel ? "start" : "end";
     const label = labels[p.data]; //+ " (" + p.value + ")";
@@ -107,15 +115,15 @@ const Donut = ({ width, height, data, columns, colors, MARGIN, labels }) => {
 
   return (
     <div>
-        <svg width={width} height={height}>
-            <g
-            transform={`translate( ${MARGIN.left + boundsWidth / 2}, ${
-                MARGIN.top + boundsHeight / 2
-            } )`}
-            >
-            {arcs}
-           </g>
-        </svg>
+      <svg width={width} height={height}>
+        <g 
+          transform={
+            `translate( ${MARGIN.left + boundsWidth / 2}, ${MARGIN.top + boundsHeight / 2} )`
+          }
+        >
+          {arcs}
+        </g>
+      </svg>
     </div>
   );
-};;;
+};

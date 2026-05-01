@@ -55,11 +55,9 @@ function App() {
         <h1>World Energy Mix</h1>
       </div>
 
-      <div style={{ display: "flex", height: 700}}>
+      <div className="main-container">
         {/* Colonne de gauche (33%) */}
-        <div
-          style={{ width: "40%", height: "100%"}}
-        >
+        <div className="left-column">
           <ResponsivePercentStackedBarchart
             data={data2024}
             columns={energyTypes}
@@ -69,18 +67,11 @@ function App() {
         </div>
 
         {/* Colonne de droite (66%) */}
-        <div
-          style={{
-            width: "60%",
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
+        <div className="right-column">
           {/* Ligne du haut (50% de la hauteur) */}
-          <div style={{ height: "50%", display: "flex" }}>
-            <div style={{ width: "40%", height: "100%" }}>
-              <h3 style={{ marginTop: -5, marginBottom: 5 }}>
+          <div className="top-row">
+            <div className="top-left">
+              <h3 style={{ marginTop: -5, marginBottom: 5, marginLeft: 50 }}>
                 Energy mix in 2024
               </h3>
               <ResponsiveDonut
@@ -91,7 +82,7 @@ function App() {
                 labels={energyLabels}
               />
             </div>
-            <div style={{ width: "60%", height: "100%" }}>
+            <div className="top-right">
               <h3 style={{ marginTop: -5, marginBottom: 5, marginLeft: 50 }}>
                 Evolution of non-fossil energy
               </h3>
@@ -105,7 +96,7 @@ function App() {
           </div>
 
           {/* Ligne du bas (50% de la hauteur) */}
-          <div style={{ height: "50%" }}>
+          <div className="bottom-row">
             <ResponsiveStackedAreaGraph
               data={worldData}
               columns={energyTypes}
