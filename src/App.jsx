@@ -2,15 +2,15 @@ import {data} from "./data";
 import { ResponsiveLineChart } from "./vizcomponents/Linechart";
 import { ResponsiveStackedAreaGraph } from "./vizcomponents/StackedAreaGraph";
 import { ResponsivePercentStackedBarchart } from "./vizcomponents/PercentStackedBarchart";
-import { ResponsiveCircularBarplot } from "./vizcomponents/CircularBarplot";
+import { ResponsiveDonut } from "./vizcomponents/Donut";
 
 const MARGIN = { top: 50, right: 50, bottom: 70, left: 70 };
 
 const colors = {
-  coal: "#6C6460", // Dim grey
-  oil: "#837A75", // Grey
+  coal: "#1F1F1D", // Carbon Black
+  oil: "#6C6460", // Dim grey
   gas: "#A9A19E", // Silver
-  nuclear: "#611A40", // Crimson violet
+  nuclear: "#812255", // Dark raspberry | "#711E4A", // Crimson violet 
   hydro: "#1A4C3A", // Pine teal
   solar: "#2A7A5C", // Jungle teal
   wind: "#39A77F", // Seaweed
@@ -73,11 +73,12 @@ function App() {
         {/* Ligne du haut (50% de la hauteur) */}
         <div style={{ height: "50%", display: "flex" }}>
           <div style={{ width: "40%", height: "100%" }}>
-            <ResponsiveCircularBarplot
+            <ResponsiveDonut
               data={worldData2024}
               columns={energyTypes}
               colors={colors}
-              MARGIN={{ top: 50, right: 50, bottom: 50, left: 50 }}
+              MARGIN={{ top: 110, right: 50, bottom: 50, left: 50 }}
+              labels = {energyLabels}
             />
           </div>
           <div style={{ width: "60%", height: "100%" }}>

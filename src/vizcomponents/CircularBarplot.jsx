@@ -1,8 +1,7 @@
 import * as d3 from "d3";
 import {useRef} from "react";
 import {useDimensions} from "./useDimensions";
-import {AxisBottom} from "./AxisBottom";
-import {AxisLeft} from "./AxisLeft";
+
 
 export const ResponsiveCircularBarplot = (props) => {
     const chartRef = useRef(null);
