@@ -62,6 +62,8 @@ const StackedAreaGraph = ({ width, height, data, columns, colors, MARGIN }) => {
           pixelsPerTick={pixelsPerTick}
           boundsWidth={boundsWidth}
           units="PWh"
+          axisLine={false}
+          grid={true}
         />
         <g transform={`translate(0,${boundsHeight})`}>
           <AxisBottom

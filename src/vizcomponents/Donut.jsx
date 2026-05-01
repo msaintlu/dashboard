@@ -88,8 +88,7 @@ const Donut = ({ width, height, data, columns, colors, MARGIN, labels }) => {
           y1={centroid[1]}
           x2={inflexionPoint[0]}
           y2={inflexionPoint[1]}
-          stroke={"black"}
-          fill={colors[p.data]}
+          stroke={colors[p.data]}
         />
         <circle cx={centroid[0]} cy={centroid[1]} r={3} fill={colors[p.data]} />
         <line
@@ -97,8 +96,7 @@ const Donut = ({ width, height, data, columns, colors, MARGIN, labels }) => {
           y1={inflexionPoint[1]}
           x2={labelPosX}
           y2={inflexionPoint[1]}
-          stroke={"black"}
-          fill={colors[p.data]}
+          stroke={colors[p.data]}
         />
         <text
           x={labelPosX + (isRightLabel ? 2 : -2)}
@@ -106,6 +104,7 @@ const Donut = ({ width, height, data, columns, colors, MARGIN, labels }) => {
           textAnchor={textAnchor}
           dominantBaseline="middle"
           fontSize={14}
+          fill={colors[p.data]}
         >
           {label}
         </text>

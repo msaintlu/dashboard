@@ -8,19 +8,20 @@ export const AxisLeft = (
 
     return (
         <>
-            {axisLine && ( <line y1={range[0]} y2={range[1]} stroke="black"/> )}
+            {axisLine && ( <line y1={range[0]} y2={range[1]} stroke="grey"/> )}
             {yScale.ticks(numberOfTicksTarget).map((value) => (
                 <g key={value} transform={`translate(0, ${yScale(value)})`}>
                     {/* Grid line */}
                     {grid && ( <line x2={boundsWidth} stroke="lightgrey" opacity={0.5} /> )}
                     {/* Tick */}
-                    {axisLine && ( <line x2={- TICK_LENGTH} stroke="black" /> )}
+                    {axisLine && ( <line x2={- TICK_LENGTH} stroke="grey" /> )}
                     <text
                         style={{
                             fontSize: "14px",
                             textAnchor: "end",
                             dominantBaseline: "middle",
                             transform: "translateX(-10px)",
+                            fill: "grey",
                         }}
                     >
                         {value}
@@ -35,6 +36,7 @@ export const AxisLeft = (
                     fontSize={20}
                     textAnchor="middle"
                     transform="rotate(-90)"
+                    fill="grey"
                 >
                     {label}
                 </text>
@@ -45,6 +47,7 @@ export const AxisLeft = (
                     x={10}
                     y={0}
                     fontSize={14}
+                    fill="grey"
                 >
                     {units}
                 </text>

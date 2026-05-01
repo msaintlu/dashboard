@@ -91,6 +91,7 @@ function App() {
                 columns={nonFossilEnergyTypes}
                 colors={colors}
                 MARGIN={MARGIN}
+                labels={energyLabels}
               />
             </div>
           </div>
@@ -105,6 +106,9 @@ function App() {
             />
           </div>
         </div>
+      </div>
+      <div style={{ height: 70, marginLeft: 20, marginTop: 30 }}>
+        <p>Source: Our World in Data</p>
       </div>
     </>
   );

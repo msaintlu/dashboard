@@ -8,18 +8,19 @@ export const AxisBottom = (
 
     return (
         <>
-            {axisLine && ( <line x1={range[0]} x2={range[1]} stroke="black"/> )}
+            {axisLine && ( <line x1={range[0]} x2={range[1]} stroke="grey"/> )}
             {xScale.ticks(numberOfTicksTarget).map((value) => (
                 <g key={value} transform={`translate(${xScale(value)}, 0)`}>
                     {/* Grid line */}
                     {grid && ( <line y2={-boundsHeight} stroke="lightgrey" opacity={0.5}/> )}
                     {/* Tick */}
-                    {axisLine && ( <line y2={TICK_LENGTH} stroke="black" /> )}
+                    {axisLine && ( <line y2={TICK_LENGTH} stroke="grey" /> )}
                     <text
                         style={{
                             fontSize: "14px",
                             textAnchor: "middle",
                             transform: "translateY(22px)",
+                            fill: "grey",
                         }}
                     >
                         {value}
@@ -33,6 +34,7 @@ export const AxisBottom = (
                     y={65}
                     fontSize={20}
                     textAnchor="middle"
+                    fill="grey"
                 >
                     {label}
                 </text>
