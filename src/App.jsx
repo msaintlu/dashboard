@@ -4,7 +4,7 @@ import { ResponsiveStackedAreaGraph } from "./vizcomponents/StackedAreaGraph";
 import { ResponsivePercentStackedBarchart } from "./vizcomponents/PercentStackedBarchart";
 import { ResponsiveDonut } from "./vizcomponents/Donut";
 
-const MARGIN = { top: 50, right: 50, bottom: 70, left: 70 };
+const MARGIN = { top: 50, right: 50, bottom: 70, left: 50 };
 
 const colors = {
   coal: "#1F1F1D", // Carbon Black
@@ -50,58 +50,72 @@ const worldData2024 = worldData.filter(d => d.year === 2024)[0]; // [0] bc only 
 function App() {
 
   return (
-    <div style={{ display: "flex", height: 750 }}>
-      {/* Colonne de gauche (33%) */}
-      <div style={{ width: "40%", height: "100%" }}>
-        <ResponsivePercentStackedBarchart
-          data={data2024}
-          columns={energyTypes}
-          colors={colors}
-          MARGIN={{ top: 50, right: 50, bottom: 70, left: 170 }}
-        />
+    <>
+      <div style={{ height: 70, marginLeft: 20, marginTop: 30 }}>
+        <h1>World Energy Mix</h1>
       </div>
 
-      {/* Colonne de droite (66%) */}
-      <div
-        style={{
-          width: "60%",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        {/* Ligne du haut (50% de la hauteur) */}
-        <div style={{ height: "50%", display: "flex" }}>
-          <div style={{ width: "40%", height: "100%" }}>
-            <ResponsiveDonut
-              data={worldData2024}
-              columns={energyTypes}
-              colors={colors}
-              MARGIN={{ top: 80, right: 50, bottom: 50, left: 50 }}
-              labels = {energyLabels}
-            />
-          </div>
-          <div style={{ width: "60%", height: "100%" }}>
-            <ResponsiveLineChart
-              data={worldData}
-              columns={nonFossilEnergyTypes}
-              colors={colors}
-              MARGIN={{ top: 50, right: 50, bottom: 70, left: 70 }}
-            />
-          </div>
-        </div>
-
-        {/* Ligne du bas (50% de la hauteur) */}
-        <div style={{ height: "50%" }}>
-          <ResponsiveStackedAreaGraph
-            data={worldData}
+      <div style={{ display: "flex", height: 700}}>
+        {/* Colonne de gauche (33%) */}
+        <div
+          style={{ width: "40%", height: "100%"}}
+        >
+          <ResponsivePercentStackedBarchart
+            data={data2024}
             columns={energyTypes}
             colors={colors}
-            MARGIN={{ top: 50, right: 50, bottom: 70, left: 70 }}
+            MARGIN={{ top: 0, right: 50, bottom: 70, left: 170 }}
           />
         </div>
+
+        {/* Colonne de droite (66%) */}
+        <div
+          style={{
+            width: "60%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          {/* Ligne du haut (50% de la hauteur) */}
+          <div style={{ height: "50%", display: "flex" }}>
+            <div style={{ width: "40%", height: "100%" }}>
+              <h3 style={{ marginTop: -5, marginBottom: 5 }}>
+                Energy mix in 2024
+              </h3>
+              <ResponsiveDonut
+                data={worldData2024}
+                columns={energyTypes}
+                colors={colors}
+                MARGIN={MARGIN}
+                labels={energyLabels}
+              />
+            </div>
+            <div style={{ width: "60%", height: "100%" }}>
+              <h3 style={{ marginTop: -5, marginBottom: 5, marginLeft: 50 }}>
+                Evolution of non-fossil energy
+              </h3>
+              <ResponsiveLineChart
+                data={worldData}
+                columns={nonFossilEnergyTypes}
+                colors={colors}
+                MARGIN={MARGIN}
+              />
+            </div>
+          </div>
+
+          {/* Ligne du bas (50% de la hauteur) */}
+          <div style={{ height: "50%" }}>
+            <ResponsiveStackedAreaGraph
+              data={worldData}
+              columns={energyTypes}
+              colors={colors}
+              MARGIN={MARGIN}
+            />
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

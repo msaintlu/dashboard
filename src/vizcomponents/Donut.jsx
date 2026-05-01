@@ -107,15 +107,15 @@ const Donut = ({ width, height, data, columns, colors, MARGIN, labels }) => {
 
   return (
     <div>
-      <svg width={width} height={height}>
-        <g
-          transform={`translate( ${MARGIN.left + boundsWidth / 2}, ${
-            MARGIN.top + boundsHeight / 2
-          } )`}
-        >
-          {arcs}
-        </g>
-      </svg>
+        <svg width={width} height={height}>
+            <g
+            transform={`translate( ${MARGIN.left + boundsWidth / 2}, ${
+                MARGIN.top + boundsHeight / 2
+            } )`}
+            >
+            {arcs}
+           </g>
+        </svg>
     </div>
   );
 };;;

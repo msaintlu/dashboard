@@ -75,7 +75,6 @@ const LineChart = ({ width, height, data, columns, colors, MARGIN, labels }) => 
                     pixelsPerTick={pixelsPerTick}
                     boundsWidth={boundsWidth}
                     units="PWh"
-                    axisLine={false}
                 />
                 <g transform={`translate(0,${boundsHeight})`}>
                     <AxisBottom
