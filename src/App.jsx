@@ -4,7 +4,7 @@ import { ResponsiveStackedAreaGraph } from "./vizcomponents/StackedAreaGraph";
 import { ResponsivePercentStackedBarchart } from "./vizcomponents/PercentStackedBarchart";
 import { ResponsiveDonut } from "./vizcomponents/Donut";
 
-const MARGIN = { top: 50, right: 30, bottom: 70, left: 50 };
+const MARGIN = { top: 50, right: 0, bottom: 70, left: 50 };
 
 const colors = {
   coal: "#1F1F1D", // Carbon Black
@@ -58,7 +58,7 @@ const sep = (
   />
 );
 
-const containerMargin = {marginLeft:20, marginTop: 10, marginBottom:0, marginRight:0}
+const containerMargin = {marginLeft:50, marginTop: 0, marginBottom:50, marginRight:0}
 
 function App() {
 
@@ -68,10 +68,9 @@ function App() {
       <div
         style={{
           height: 70,
-          marginLeft: 20,
+          marginLeft: containerMargin.marginLeft,
           marginTop: 20,
-          marginRight: 20,
-          marginBottom: 0,
+          marginBottom: 15,
         }}
       >
         <p className="panel-title" style={{ fontSize: 40 }}>
@@ -128,7 +127,7 @@ function App() {
             data={data2024}
             columns={energyTypes}
             colors={colors}
-            MARGIN={{ top: 20, right: 30, bottom: 60, left: 160 }}
+            MARGIN={{ top: 20, right: 0, bottom: 70, left: 160 }}
           />
         </div>
       </div>

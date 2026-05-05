@@ -22,9 +22,9 @@
 /* Layout par défaut (écran large) */
 .main-container {
   display: flex;
-  height: 680px;
-  margin-left: 20px;
-  margin-right: 20px;
+  height: 660px;
+  margin-left: 0px;
+  margin-right: 60px;
 }
 
 .right-column {
