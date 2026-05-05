@@ -4,7 +4,7 @@ import { ResponsiveStackedAreaGraph } from "./vizcomponents/StackedAreaGraph";
 import { ResponsivePercentStackedBarchart } from "./vizcomponents/PercentStackedBarchart";
 import { ResponsiveDonut } from "./vizcomponents/Donut";
 
-const MARGIN = { top: 50, right: 50, bottom: 70, left: 50 };
+const MARGIN = { top: 50, right: 30, bottom: 70, left: 50 };
 
 const colors = {
   coal: "#1F1F1D", // Carbon Black
@@ -47,45 +47,57 @@ const worldData = dataPWh.filter(d => d.country === "World");
 const data2024 = data.filter(d => d.year === 2024);
 const worldData2024 = worldData.filter(d => d.year === 2024)[0]; // [0] bc only one line
 
+// Layout stuff
+
+const sep = (
+  <div
+    style={{
+      height: 1,
+      backgroundColor: "lightgrey",
+    }}
+  />
+);
+
+const containerMargin = {marginLeft:20, marginTop: 10, marginBottom:0, marginRight:0}
+
 function App() {
 
   return (
     <>
-      <div style={{ height: 70, marginLeft: 20, marginTop: 30 }}>
-        <h1>World Energy Mix</h1>
+      {/* Title */}
+      <div
+        style={{
+          height: 70,
+          marginLeft: 20,
+          marginTop: 20,
+          marginRight: 20,
+          marginBottom: 0,
+        }}
+      >
+        <p className="panel-title" style={{ fontSize: 40 }}>
+          World Energy Mix
+        </p>
       </div>
 
       <div className="main-container">
-        {/* Colonne de gauche (33%) */}
+        {/* Colonne de gauche (66%) */}
         <div className="left-column">
-          <ResponsivePercentStackedBarchart
-            data={data2024}
-            columns={energyTypes}
-            colors={colors}
-            MARGIN={{ top: 0, right: 50, bottom: 70, left: 170 }}
-          />
-        </div>
-
-        {/* Colonne de droite (66%) */}
-        <div className="right-column">
           {/* Ligne du haut (50% de la hauteur) */}
           <div className="top-row">
-            <div className="top-left">
-              <h3 style={{ marginTop: -5, marginBottom: 5, marginLeft: 50 }}>
-                Energy mix in 2024
-              </h3>
+            <div className="top-left" style={containerMargin}>
+              <p className="panel-title">World energy mix in 2024</p>
+              {sep}
               <ResponsiveDonut
                 data={worldData2024}
                 columns={energyTypes}
                 colors={colors}
-                MARGIN={MARGIN}
+                MARGIN={{ top: 70, right: 30, bottom: 70, left: 50 }}
                 labels={energyLabels}
               />
             </div>
-            <div className="top-right">
-              <h3 style={{ marginTop: -5, marginBottom: 5, marginLeft: 50 }}>
-                Evolution of non-fossil energy
-              </h3>
+            <div className="top-right" style={containerMargin}>
+              <p className="panel-title">Non-fossil development</p>
+              {sep}
               <ResponsiveLineChart
                 data={worldData}
                 columns={nonFossilEnergyTypes}
@@ -97,7 +109,9 @@ function App() {
           </div>
 
           {/* Ligne du bas (50% de la hauteur) */}
-          <div className="bottom-row">
+          <div className="bottom-row" style={containerMargin}>
+            <p className="panel-title">World energy mix evolution</p>
+            {sep}
             <ResponsiveStackedAreaGraph
               data={worldData}
               columns={energyTypes}
@@ -105,6 +119,17 @@ function App() {
               MARGIN={MARGIN}
             />
           </div>
+        </div>
+        {/* Colonne de droite (33%) */}
+        <div className="right-column" style={containerMargin}>
+          <p className="panel-title">Energy mix in 2024</p>
+          {sep}
+          <ResponsivePercentStackedBarchart
+            data={data2024}
+            columns={energyTypes}
+            colors={colors}
+            MARGIN={{ top: 20, right: 30, bottom: 60, left: 160 }}
+          />
         </div>
       </div>
       <div style={{ height: 70, marginLeft: 20, marginTop: 30 }}>

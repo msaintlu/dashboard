@@ -103,7 +103,7 @@ const Donut = ({ width, height, data, columns, colors, MARGIN, labels }) => {
           y={inflexionPoint[1]}
           textAnchor={textAnchor}
           dominantBaseline="middle"
-          fontSize={14}
+          fontSize={15}
           fill={colors[p.data]}
         >
           {label}

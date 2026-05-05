@@ -1,11 +1,15 @@
-module.exports = {
+/** @type {import('tailwindcss').Config} */
+export default {
   content: [
     "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}", // Inclut tous les fichiers dans src/
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-      extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Nunito Sans', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
-};
-
+}

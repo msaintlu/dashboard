@@ -1,35 +1,38 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  :root {
-    font-family: theme('fontFamily.sans');
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 400;
+  html, body {
+    font-family: 'Nunito Sans', sans-serif;
+    font-weight: 350; /* Appliqué à tout le document */
     color: rgba(0, 0, 0, 0.87);
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-text-size-adjust: 100%;
+    font-variation-settings: "wdth" 100, "YTLC" 500;
   }
 }
+
+.panel-title{
+  font-size: 22px;
+  margin-top: 0px;
+  margin-bottom: 5px;
+}
+
 
 /* Layout par défaut (écran large) */
 .main-container {
   display: flex;
-  height: 700px;
+  height: 680px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
-.left-column {
+.right-column {
   width: 40%;
   height: 100%;
 }
 
-.right-column {
+.left-column {
   width: 60%;
   height: 100%;
   display: flex;
@@ -56,7 +59,7 @@
 }
 
 /* Layout pour écran étroit (< 900px) */
-@media (max-width: 900px) {
+@media (max-width: 1150px) {
   .main-container {
     flex-direction: column;
     height: auto; /* Hauteur automatique pour éviter les superpositions */

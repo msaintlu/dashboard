@@ -20,7 +20,7 @@ export const ResponsiveLineChart = (props) => {
 
 const LineChart = ({ width, height, data, columns, colors, MARGIN, labels }) => {
 
-  const marginRight = labels ? 170 : MARGIN.right;
+  const marginRight = labels ? 150 : MARGIN.right;
 
   const boundsWidth = width - MARGIN.left - marginRight;
   const boundsHeight = height - MARGIN.top - MARGIN.bottom;
@@ -55,7 +55,7 @@ const LineChart = ({ width, height, data, columns, colors, MARGIN, labels }) => 
           <g transform={`translate(${boundsWidth + 8}, ${yScale(labelY)})`}>
             <text
               style={{
-                fontSize: "14px",
+                fontSize: "15px",
                 textAnchor: "start",
                 dominantBaseline: "middle",
                 fill: colors[col],
