@@ -7,15 +7,15 @@ import { ResponsiveDonut } from "./vizcomponents/Donut";
 const MARGIN = { top: 50, right: 0, bottom: 70, left: 50 };
 
 const colors = {
-  coal: "#1F1F1D", // Carbon Black
-  oil: "#6C6460", // Dim grey
+  coal: "#6C6460", // Dim grey | "#3F3F3B", // Charcoal brown | #1F1F1D", // Carbon Black
+  oil: "#8C827D", // Rosy granite
   gas: "#A9A19E", // Silver
-  nuclear: "#812255", // Dark raspberry | "#711E4A", // Crimson violet 
-  hydro: "#1A4C3A", // Pine teal
-  solar: "#2A7A5C", // Jungle teal
-  wind: "#39A77F", // Seaweed
-  biofuel: "#997143", // Toffee brown
-  other_renewable: "#76D0AF", // Turquoise
+  nuclear: "#392654", // Dark amethyst | "#F5B0CB", // Blush pop | "#812255", // Dark raspberry | "#711E4A", // Crimson violet
+  hydro: "#1A634F", // Emerald depths | "#246A51", // Dark emerald | "#1A4C3A", // Pine teal
+  solar: "#228168", //"#2F8968", // "#2A7A5C", // Jungle teal
+  wind: "#2BA182", // "#39A77F", // Seaweed
+  biofuel: "#A89459", // Camel  | "#997143", // Toffee brown
+  other_renewable: "#33C19C", //"#76D0AF", // Turquoise
 };
 
 const energyLabels = {
