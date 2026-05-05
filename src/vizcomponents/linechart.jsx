@@ -24,7 +24,7 @@ const LineChart = ({ width, height, data, columns, colors, MARGIN, labels }) => 
 
   const boundsWidth = width - MARGIN.left - marginRight;
   const boundsHeight = height - MARGIN.top - MARGIN.bottom;
-  const pixelsPerTick = 100;
+  const pixelsPerTick = 80;
 
   // build the scales    
   const xScale = d3.scaleLinear()
