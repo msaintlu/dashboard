@@ -18,7 +18,7 @@ export const ResponsiveLineChart = (props) => {
   );
 };
 
-const LineChart = ({ width, height, data, columns, colors, MARGIN, labels }) => {
+const LineChart = ({ width, height, data, columns, colors, MARGIN, labels, hoveredCol, setHoveredCol }) => {
 
   const marginRight = labels ? 150 : MARGIN.right;
 
@@ -44,12 +44,23 @@ const LineChart = ({ width, height, data, columns, colors, MARGIN, labels }) => 
     const linePath = lineBuilder(data);
     const labelY = data.filter((d) => d.year === 2024).map((d) => d[col])[0];
     return (
-      <g key={i}>
+      <g
+        key={i}
+        onMouseEnter={() => setHoveredCol(col)}
+        onMouseLeave={() => setHoveredCol(null)}
+      >
         <path
           d={linePath}
           stroke={colors[col] || "black"}
+          strokeWidth={hoveredCol === col ? 4 : 3}
           fill="none"
-          strokeWidth={3}
+          opacity={hoveredCol === null || hoveredCol === col ? 1 : 0.2}
+        />
+        <path // Thicker invisible lines to catch the mouse on hovering
+          d={linePath}
+          stroke="transparent"
+          fill="none"
+          strokeWidth={15}
         />
         {labels && (
           <g transform={`translate(${boundsWidth + 8}, ${yScale(labelY)})`}>
@@ -59,8 +70,10 @@ const LineChart = ({ width, height, data, columns, colors, MARGIN, labels }) => 
                 textAnchor: "start",
                 dominantBaseline: "middle",
                 fill: colors[col],
+                opacity: hoveredCol === null || hoveredCol === col ? 1 : 0.2,
+                cursor: "default",
               }}
-          >
+            >
               {labels[col]}
             </text>
           </g>

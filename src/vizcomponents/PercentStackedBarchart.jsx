@@ -17,7 +17,7 @@ export const ResponsivePercentStackedBarchart = (props) => {
   );
 };
 
-const PercentStackedBarchart = ({ width, height, data, columns, colors, MARGIN }) => {
+const PercentStackedBarchart = ({ width, height, data, columns, colors, MARGIN, hoveredCol, setHoveredCol }) => {
 
   const boundsWidth = width - MARGIN.left - MARGIN.right;
   const boundsHeight = height - MARGIN.top - MARGIN.bottom;
@@ -39,15 +39,27 @@ const PercentStackedBarchart = ({ width, height, data, columns, colors, MARGIN }
     .domain([0, 100]) 
     .range([0, boundsWidth]);
   
-  const yScale = d3.scaleBand()
-    .domain(data.map(d => d.country))
+  const yScale = d3
+    .scaleBand()
+    .domain(data.map((d) => d.country))
     .range([0, boundsHeight])
     .paddingInner(0.1)
     .paddingOuter(0);
 
+  const yScaleHover = d3
+    .scaleBand()
+    .domain(data.map((d) => d.country))
+    .range([0, boundsHeight])
+    .paddingInner(0)
+    .paddingOuter(0);
+
   // Build the bars (segments)
   const allBars = series.map((serie, i) => {   // series is an array, one item per energy type here
-    return serie.map((segment, j) => (    // each serie is in the form [[38, 57, data: {…}], [38, 78, data: {…}]..., key: 'coal', index: 1]
+    return serie.map((
+      // each serie is in the form [[38, 57, data: {…}], [38, 78, data: {…}]..., key: 'coal', index: 1]
+      segment,
+      j
+    ) => (
       <g key={`${i}-${j}`}>
         <rect
           x={xScale(segment[0])}
@@ -55,11 +67,22 @@ const PercentStackedBarchart = ({ width, height, data, columns, colors, MARGIN }
           width={xScale(segment[1]) - xScale(segment[0])}
           height={yScale.bandwidth()}
           fill={colors[serie.key] || "black"}
+          opacity={hoveredCol===null || hoveredCol===serie.key ? 1 : 0.2}
         />
-        {i===0 && (
+        {/* Invisible bars for hovering */}
+        <rect
+          x={xScale(segment[0])}
+          y={yScale(segment.data.country)}
+          width={xScale(segment[1]) - xScale(segment[0])}
+          height={yScaleHover.bandwidth()}
+          fill="transparent"
+          onMouseEnter={() => setHoveredCol(serie.key)}
+          onMouseLeave={() => setHoveredCol(null)}
+        />
+        {i === 0 && (
           <text
             x={-10}
-            y={yScale(segment.data.country) + yScale.bandwidth()/2}
+            y={yScale(segment.data.country) + yScale.bandwidth() / 2}
             style={{
               fontSize: "14px",
               textAnchor: "end",

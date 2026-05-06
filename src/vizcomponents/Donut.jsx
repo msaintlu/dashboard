@@ -17,7 +17,7 @@ export const ResponsiveDonut = (props) => {
   );
 };
 
-const Donut = ({ width, height, data, columns, colors, MARGIN, labels }) => {
+const Donut = ({ width, height, data, columns, colors, MARGIN, labels, hoveredCol, setHoveredCol }) => {
   const boundsWidth = width - MARGIN.left - MARGIN.right;
   const boundsHeight = height - MARGIN.top - MARGIN.bottom;
 
@@ -81,8 +81,17 @@ const Donut = ({ width, height, data, columns, colors, MARGIN, labels }) => {
     const textAnchor = isRightLabel ? "start" : "end";
     const label = labels[p.data]; //+ " (" + p.value + ")";
     return (
-      <g key={i}>
-        <path d={slicePath} fill={colors[p.data]} /> {/* The donut */}
+      <g
+        key={i}
+        onMouseEnter={() => setHoveredCol(p.data)}
+        onMouseLeave={() => setHoveredCol(null)}
+        opacity={hoveredCol === null || hoveredCol === p.data ? 1 : 0.2}
+      >
+        <path
+          d={slicePath}
+          fill={colors[p.data]}
+        />{" "}
+        {/* The donut */}
         <line
           x1={centroid[0]}
           y1={centroid[1]}
@@ -99,6 +108,7 @@ const Donut = ({ width, height, data, columns, colors, MARGIN, labels }) => {
           stroke={colors[p.data]}
         />
         <text
+          style={{cursor: "default"}}
           x={labelPosX + (isRightLabel ? 2 : -2)}
           y={inflexionPoint[1]}
           textAnchor={textAnchor}

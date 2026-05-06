@@ -18,7 +18,7 @@ export const ResponsiveStackedAreaGraph = (props) => {
   );
 };
 
-const StackedAreaGraph = ({ width, height, data, columns, colors, MARGIN }) => {
+const StackedAreaGraph = ({ width, height, data, columns, colors, MARGIN, hoveredCol, setHoveredCol }) => {
 
   const boundsWidth = width - MARGIN.left - MARGIN.right;
   const boundsHeight = height - MARGIN.top - MARGIN.bottom;
@@ -48,7 +48,13 @@ const StackedAreaGraph = ({ width, height, data, columns, colors, MARGIN }) => {
     const path = areaBuilder(serie);
     return (
       <g key={i}>
-        <path d={path} fill={colors[serie.key] || "black"} />
+        <path 
+          d={path} 
+          fill={colors[serie.key] || "black"} 
+          opacity={hoveredCol===null || hoveredCol===serie.key ? 1 : 0.2} 
+          onMouseEnter={() => setHoveredCol(serie.key)}
+          onMouseLeave={() => setHoveredCol(null)}
+        />
       </g>
     );
   });

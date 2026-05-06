@@ -3,6 +3,8 @@ import { ResponsiveLineChart } from "./vizcomponents/Linechart";
 import { ResponsiveStackedAreaGraph } from "./vizcomponents/StackedAreaGraph";
 import { ResponsivePercentStackedBarchart } from "./vizcomponents/PercentStackedBarchart";
 import { ResponsiveDonut } from "./vizcomponents/Donut";
+import { useState } from "react";
+
 
 const MARGIN = { top: 50, right: 0, bottom: 70, left: 50 };
 
@@ -62,6 +64,8 @@ const containerMargin = {marginLeft:50, marginTop: 0, marginBottom:50, marginRig
 
 function App() {
 
+  const [hoveredEner, setHoveredEner] = useState(null);
+
   return (
     <>
       {/* Title */}
@@ -92,10 +96,12 @@ function App() {
                 colors={colors}
                 MARGIN={{ top: 70, right: 30, bottom: 70, left: 50 }}
                 labels={energyLabels}
+                hoveredCol={hoveredEner}
+                setHoveredCol={setHoveredEner}
               />
             </div>
             <div className="top-right" style={containerMargin}>
-              <p className="panel-title">Non-fossil development</p>
+              <p className="panel-title">World non-fossil energy evolution</p>
               {sep}
               <ResponsiveLineChart
                 data={worldData}
@@ -103,6 +109,8 @@ function App() {
                 colors={colors}
                 MARGIN={MARGIN}
                 labels={energyLabels}
+                hoveredCol={hoveredEner}
+                setHoveredCol={setHoveredEner}
               />
             </div>
           </div>
@@ -116,6 +124,8 @@ function App() {
               columns={energyTypes}
               colors={colors}
               MARGIN={MARGIN}
+              hoveredCol={hoveredEner}
+              setHoveredCol={setHoveredEner}
             />
           </div>
         </div>
@@ -128,6 +138,8 @@ function App() {
             columns={energyTypes}
             colors={colors}
             MARGIN={{ top: 20, right: 0, bottom: 70, left: 160 }}
+            hoveredCol={hoveredEner}
+            setHoveredCol={setHoveredEner}
           />
         </div>
       </div>
