@@ -86,12 +86,9 @@ const Donut = ({ width, height, data, columns, colors, MARGIN, labels, hoveredCo
         onMouseEnter={() => setHoveredCol(p.data)}
         onMouseLeave={() => setHoveredCol(null)}
         opacity={hoveredCol === null || hoveredCol === p.data ? 1 : 0.2}
+        style={{ transition: "opacity 100ms ease-in-out" }}
       >
-        <path
-          d={slicePath}
-          fill={colors[p.data]}
-        />{" "}
-        {/* The donut */}
+        <path d={slicePath} fill={colors[p.data]} /> {/* The donut */}
         <line
           x1={centroid[0]}
           y1={centroid[1]}
@@ -108,7 +105,7 @@ const Donut = ({ width, height, data, columns, colors, MARGIN, labels, hoveredCo
           stroke={colors[p.data]}
         />
         <text
-          style={{cursor: "default"}}
+          style={{ cursor: "default" }}
           x={labelPosX + (isRightLabel ? 2 : -2)}
           y={inflexionPoint[1]}
           textAnchor={textAnchor}

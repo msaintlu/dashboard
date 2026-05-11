@@ -76,8 +76,8 @@ const PercentStackedBarchart = ({ width, height, data, columns, colors, MARGIN, 
           width={xScale(segment[1]) - xScale(segment[0])}
           height={yScaleHover.bandwidth()}
           fill="transparent"
-          onMouseEnter={() => setHoveredCol(serie.key)}
-          onMouseLeave={() => setHoveredCol(null)}
+          /*onMouseEnter={() => setHoveredCol(serie.key)}
+          onMouseLeave={() => setHoveredCol(null)}*/
         />
         {i === 0 && (
           <text

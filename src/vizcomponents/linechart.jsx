@@ -48,6 +48,7 @@ const LineChart = ({ width, height, data, columns, colors, MARGIN, labels, hover
         key={i}
         onMouseEnter={() => setHoveredCol(col)}
         onMouseLeave={() => setHoveredCol(null)}
+        style={{ transition: "opacity 100ms ease-in-out" }}
       >
         <path
           d={linePath}
