@@ -3,6 +3,7 @@ import {useRef, useState} from "react";
 import {useDimensions} from "./useDimensions";
 import {AxisBottom} from "./AxisBottom";
 import {AxisLeft} from "./AxisLeft";
+import {Tooltip} from "./Tooltip_StackedAreaGraph";
 
 export const ResponsiveStackedAreaGraph = (props) => {
   const chartRef = useRef(null);
@@ -18,11 +19,14 @@ export const ResponsiveStackedAreaGraph = (props) => {
   );
 };
 
+const bisect = d3.bisector((d) => d.year).left; // To catch the closest x point for the tooltip
+
+
 const StackedAreaGraph = ({ width, height, data, columns, colors, MARGIN, hoveredCol, setHoveredCol }) => {
   const boundsWidth = width - MARGIN.left - MARGIN.right;
   const boundsHeight = height - MARGIN.top - MARGIN.bottom;
   const pixelsPerTick = 100;
-  const [cursor, setCursor] = useState(null);
+  const [interactionData, setInteractionData] = useState(null);
 
   // Stack the data
   const stackSeries = d3.stack().keys(columns);
@@ -41,6 +45,7 @@ const StackedAreaGraph = ({ width, height, data, columns, colors, MARGIN, hovere
     .range([boundsHeight, 0]);
 
   // Build the areas
+
   const areaBuilder = d3
     .area()
     .x((s) => xScale(s.data.year))
@@ -66,56 +71,94 @@ const StackedAreaGraph = ({ width, height, data, columns, colors, MARGIN, hovere
     );
   });
 
-  // Handle mouse hovering 
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    setCursor(x);
-  };
+  // Handle mouse hovering for tooltip
 
-  const handleMouseLeave = () => {
-    setCursor(null);
+  const handleMouseMove = (event) => {
+    const cursorX = event.nativeEvent.offsetX;
+    const xValue = xScale.invert(cursorX);
+
+    const index = bisect(data, xValue);
+    const d0 = data[index - 1];
+    const d1 = data[index];
+    const nearest = !d0
+      ? d1
+      : !d1
+      ? d0
+      : xValue - d0.year > d1.year - xValue
+      ? d1
+      : d0;
+
+    setInteractionData({
+      xPos: xScale(nearest.year),
+      yPos: 100,
+      name: nearest.year,
+      xValue: nearest.year,
+      color: "#4e79a7",
+    });
   };
 
   return (
-    <svg width={width} height={height}>
-      <g transform={`translate(${MARGIN.left},${MARGIN.top})`}>
-        {/* render axes*/}
-        <AxisLeft
-          yScale={yScale}
-          pixelsPerTick={pixelsPerTick}
-          boundsWidth={boundsWidth}
-          units="PWh"
-          axisLine={false}
-          grid={true}
-        />
-        <g transform={`translate(0,${boundsHeight})`}>
-          <AxisBottom
-            xScale={xScale}
+    <div style={{ position: "relative" }}>
+      <svg width={width} height={height}>
+        <g transform={`translate(${MARGIN.left},${MARGIN.top})`}>
+          {/* render axes*/}
+          <AxisLeft
+            yScale={yScale}
             pixelsPerTick={pixelsPerTick}
-            boundsHeight={boundsHeight}
+            boundsWidth={boundsWidth}
+            units="PWh"
             axisLine={false}
+            grid={true}
+          />
+          <g transform={`translate(0,${boundsHeight})`}>
+            <AxisBottom
+              xScale={xScale}
+              pixelsPerTick={pixelsPerTick}
+              boundsHeight={boundsHeight}
+              axisLine={false}
+            />
+          </g>
+          {/* render all the <path> */}
+          <g
+          //onMouseMove={handleMouseMove}
+          //onMouseLeave={handleMouseLeave}
+          //style={{ cursor: "cell" }}
+          >
+            {allPath}
+            {/*cursor && (
+            <line
+              x1={cursor}
+              y1={0}
+              x2={cursor}
+              y2={boundsHeight}
+              stroke="black"
+              strokeWidth={0.5}
+            />
+            )*/}
+          </g>
+          {/* Invisible cursor catcher */}
+          <rect
+            width={boundsWidth}
+            height={boundsHeight}
+            fill="transparent"
+            onMouseMove={handleMouseMove}
+            onMouseLeave={() => setInteractionData(null)}
           />
         </g>
-        {/* render all the <path>*/}
-        <g
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          style={{ cursor: "cell" }}
-        >
-          {allPath}
-          {cursor && (
-          <line
-            x1={cursor}
-            y1={0}
-            x2={cursor}
-            y2={boundsHeight}
-            stroke="black"
-            strokeWidth={0.5}
-          />
-          )}
-        </g>
-      </g>
-    </svg>
+      </svg>
+      {/* Tooltip layer */}
+      <div
+        style={{
+          position: "absolute",
+          width: boundsWidth,
+          height: boundsHeight,
+          top: MARGIN.top,
+          left: MARGIN.left,
+          pointerEvents: "none",
+        }}
+      >
+        <Tooltip interactionData={interactionData} />
+      </div>
+    </div>
   );
 };
