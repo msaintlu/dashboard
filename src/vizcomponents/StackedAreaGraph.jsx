@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import {useRef} from "react";
+import {useRef, useState} from "react";
 import {useDimensions} from "./useDimensions";
 import {AxisBottom} from "./AxisBottom";
 import {AxisLeft} from "./AxisLeft";
@@ -19,27 +19,30 @@ export const ResponsiveStackedAreaGraph = (props) => {
 };
 
 const StackedAreaGraph = ({ width, height, data, columns, colors, MARGIN, hoveredCol, setHoveredCol }) => {
-
   const boundsWidth = width - MARGIN.left - MARGIN.right;
   const boundsHeight = height - MARGIN.top - MARGIN.bottom;
   const pixelsPerTick = 100;
+  const [cursor, setCursor] = useState(null);
 
   // Stack the data
-  const stackSeries = d3.stack().keys(columns)
+  const stackSeries = d3.stack().keys(columns);
   const series = stackSeries(data);
-  
-  // build the scales    
-  const xScale = d3.scaleLinear()
+
+  // build the scales
+  const xScale = d3
+    .scaleLinear()
     .domain(d3.extent(data, (d) => d.year))
     .range([0, boundsWidth]);
-  
-  const maxValue = d3.max(series.flatMap(d => d.map(point => point[1])));
-  const yScale = d3.scaleLinear().
-    domain([0, maxValue]).
-    range([boundsHeight, 0]);
+
+  const maxValue = d3.max(series.flatMap((d) => d.map((point) => point[1])));
+  const yScale = d3
+    .scaleLinear()
+    .domain([0, maxValue])
+    .range([boundsHeight, 0]);
 
   // Build the areas
-  const areaBuilder = d3.area()
+  const areaBuilder = d3
+    .area()
     .x((s) => xScale(s.data.year))
     .y1((s) => yScale(s[1]))
     .y0((s) => yScale(s[0]));
@@ -52,13 +55,27 @@ const StackedAreaGraph = ({ width, height, data, columns, colors, MARGIN, hovere
           d={path}
           fill={colors[serie.key] || "black"}
           opacity={hoveredCol === null || hoveredCol === serie.key ? 1 : 0.2}
-          onMouseEnter={() => setHoveredCol(serie.key)}
-          onMouseLeave={() => setHoveredCol(null)}
+          /*onMouseEnter={() => setHoveredCol(serie.key)}*/
+          /*onMouseLeave={() => setHoveredCol(null)}*/
           style={{ transition: "opacity 100ms ease-in-out" }}
+          onMouseLeave={() => {
+            setHoveredCol(null);
+          }}
         />
       </g>
     );
   });
+
+  // Handle mouse hovering 
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    setCursor(x);
+  };
+
+  const handleMouseLeave = () => {
+    setCursor(null);
+  };
 
   return (
     <svg width={width} height={height}>
@@ -81,8 +98,24 @@ const StackedAreaGraph = ({ width, height, data, columns, colors, MARGIN, hovere
           />
         </g>
         {/* render all the <path>*/}
-        {allPath}
+        <g
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          style={{ cursor: "cell" }}
+        >
+          {allPath}
+          {cursor && (
+          <line
+            x1={cursor}
+            y1={0}
+            x2={cursor}
+            y2={boundsHeight}
+            stroke="black"
+            strokeWidth={0.5}
+          />
+          )}
+        </g>
       </g>
     </svg>
-);
+  );
 };
