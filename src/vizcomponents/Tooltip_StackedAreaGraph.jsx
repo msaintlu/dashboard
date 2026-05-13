@@ -3,7 +3,7 @@ export const Tooltip = ({ interactionData }) => {
     return null;
   }
 
-  const { xPos, yPos, name, xValue, color} = interactionData;
+  const { xPos, yPos, name, xValue, height} = interactionData;
 
   return (
     <div
@@ -11,7 +11,6 @@ export const Tooltip = ({ interactionData }) => {
       style={{
         left: xPos,
         top: yPos,
-        borderColor: color,
       }}
     >
       <b>{name}</b>

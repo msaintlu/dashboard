@@ -74,7 +74,7 @@ const StackedAreaGraph = ({ width, height, data, columns, colors, MARGIN, hovere
   // Handle mouse hovering for tooltip
 
   const handleMouseMove = (event) => {
-    const cursorX = event.nativeEvent.offsetX;
+    const cursorX = event.nativeEvent.offsetX - MARGIN.left;
     const xValue = xScale.invert(cursorX);
 
     const index = bisect(data, xValue);
@@ -93,7 +93,27 @@ const StackedAreaGraph = ({ width, height, data, columns, colors, MARGIN, hovere
       yPos: 100,
       name: nearest.year,
       xValue: nearest.year,
-      color: "#4e79a7",
+      height: boundsHeight,
+    });
+  };
+
+  // Mini scatterplot at hovering, for each year    
+  const hoveringPoints = (interactionData) => {
+    return series.map((serie) => {
+      const segment = serie.find((s) => s.data.year === interactionData.xValue);
+      if (!segment) return null; 
+
+      return (
+        <circle
+          key={`hover-point-${serie.key}`} 
+          cx={interactionData.xPos}
+          cy={yScale((segment[0]+segment[1])/2)} 
+          r={3}
+          fill={colors[serie.key] || "red"} 
+          stroke="white" 
+          strokeWidth={0.5}
+        />
+      );
     });
   };
 
@@ -119,23 +139,21 @@ const StackedAreaGraph = ({ width, height, data, columns, colors, MARGIN, hovere
             />
           </g>
           {/* render all the <path> */}
-          <g
-          //onMouseMove={handleMouseMove}
-          //onMouseLeave={handleMouseLeave}
-          //style={{ cursor: "cell" }}
-          >
-            {allPath}
-            {/*cursor && (
-            <line
-              x1={cursor}
-              y1={0}
-              x2={cursor}
-              y2={boundsHeight}
-              stroke="black"
-              strokeWidth={0.5}
-            />
-            )*/}
-          </g>
+          {allPath}
+          {/* render tooltip */}
+          {interactionData && (
+            <g>
+              <line
+                x1={interactionData.xPos}
+                y1={0}
+                x2={interactionData.xPos}
+                y2={boundsHeight}
+                stroke="black"
+                strokeWidth={0.5}
+              />
+              {hoveringPoints(interactionData)}
+            </g>
+          )}
           {/* Invisible cursor catcher */}
           <rect
             width={boundsWidth}

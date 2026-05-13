@@ -1,4 +1,4 @@
-import {data} from "./data";
+import { data } from "./data";
 import { ResponsiveLineChart } from "./vizcomponents/Linechart";
 import { ResponsiveStackedAreaGraph } from "./vizcomponents/StackedAreaGraph";
 import { ResponsivePercentStackedBarchart } from "./vizcomponents/PercentStackedBarchart";
