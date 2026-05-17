@@ -126,6 +126,7 @@ function App() {
               MARGIN={MARGIN}
               hoveredCol={hoveredEner}
               setHoveredCol={setHoveredEner}
+              labels={energyLabels}
             />
           </div>
         </div>

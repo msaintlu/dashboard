@@ -3,20 +3,29 @@ export const Tooltip = ({ interactionData }) => {
     return null;
   }
 
-  const { xPos, yPos, name, xValue, height, placement} = interactionData;
+  const { xPos, name, xValue, yValues, height, placement, yCats, colors, labels} = interactionData;
 
   return (
     <div
       className="tooltip"
       style={{
         left: xPos,
-        top: yPos,
+        top: 0,
         transform:
           placement === "left" ? "translateX(-120%)" : "translateX(20%)",
       }}
     >
-      <b>{name}</b>
-      <p>{"x: " + xValue}</p>
+      <div className="tooltip-title">
+        <b>{name}</b>
+      </div>
+      {yCats.map((c, i) => (
+        <div className="tooltip-content" style={{ borderColor: colors[c] }}>
+          <div className="tooltip-row">
+            <span> {labels[c]} </span>
+            <b> {yValues[0][c].percentage + " %"} </b>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };

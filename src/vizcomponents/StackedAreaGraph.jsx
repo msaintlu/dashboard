@@ -22,7 +22,7 @@ export const ResponsiveStackedAreaGraph = (props) => {
 const bisect = d3.bisector((d) => d.year).left; // To catch the closest x point for the tooltip
 
 
-const StackedAreaGraph = ({ width, height, data, columns, colors, MARGIN, hoveredCol, setHoveredCol }) => {
+const StackedAreaGraph = ({ width, height, data, columns, colors, MARGIN, hoveredCol, setHoveredCol, labels }) => {
   const boundsWidth = width - MARGIN.left - MARGIN.right;
   const boundsHeight = height - MARGIN.top - MARGIN.bottom;
   const pixelsPerTick = 100;
@@ -71,6 +71,19 @@ const StackedAreaGraph = ({ width, height, data, columns, colors, MARGIN, hovere
     );
   });
 
+  // Compute percentage data, for tooltip
+  const yearlyPercent = data.map(yearData => {
+    const total = columns.reduce((sum, col) => sum + yearData[col], 0);
+    const result = { year: yearData.year };
+    columns.forEach((col) => {
+      result[col] = {
+        value: yearData[col],
+        percentage: parseFloat(((yearData[col] / total) * 100).toFixed(1)), 
+      };
+    });
+    return result;
+  });
+
   // Handle mouse hovering for tooltip
 
   const handleMouseMove = (event) => {
@@ -88,14 +101,17 @@ const StackedAreaGraph = ({ width, height, data, columns, colors, MARGIN, hovere
       ? d1
       : d0;
 
-    setInteractionData({
-      xPos: xScale(nearest.year),
-      yPos: boundsHeight/3,
-      name: nearest.year,
-      xValue: nearest.year,
-      height: boundsHeight,
-      placement: xScale(nearest.year) < boundsWidth / 2 ? "right" : "left",
-    });
+      setInteractionData({
+        xPos: xScale(nearest.year),
+        name: nearest.year,
+        xValue: nearest.year,
+        yValues: yearlyPercent.filter((d) => d.year === nearest.year),
+        height: boundsHeight,
+        placement: xScale(nearest.year) < boundsWidth / 2 ? "right" : "left",
+        yCats: [...columns].reverse(),
+        colors: colors,
+        labels: labels,
+      });
   };
 
   // Mini scatterplot at hovering, for each year    

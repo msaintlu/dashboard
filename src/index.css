@@ -25,13 +25,31 @@
     box-shadow: 3px 3px 3px rgb(0 0 0 / 10%);
     font-size: 14px;
     /*max-width: 200px;*/
-    padding: 6px 8px;
+    min-width: 200px;
+    padding: 8px 12px;
     position: absolute;
     /*transform: translateY(-50%);*/
 }
-.tooltip p {
-  margin: 2px 0;
+.tooltip-title {
+  font-size: 14px;
+  margin-bottom: 8px;
 }
+.tooltip-content {
+    border-left: solid 4px;
+    padding-left: 8px;
+    padding-top: 0px;
+}
+.tooltip-row {
+    display: flex;
+    justify-content: space-between;
+    line-height: 16px;
+    font-size: 14px;
+    margin: 2px 0;
+}
+/*.tooltip p {
+  margin: 2px 0;
+}*/
+
 
 /* Layout par défaut (écran large) */
 .main-container {
