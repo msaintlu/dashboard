@@ -25,7 +25,7 @@ const bisect = d3.bisector((d) => d.year).left; // To catch the closest x point 
 const StackedAreaGraph = ({ width, height, data, columns, colors, MARGIN, hoveredCol, setHoveredCol, labels }) => {
   const boundsWidth = width - MARGIN.left - MARGIN.right;
   const boundsHeight = height - MARGIN.top - MARGIN.bottom;
-  const pixelsPerTick = 100;
+  const pixelsPerTick = 80;
   const [interactionData, setInteractionData] = useState(null);
 
   // Stack the data
