@@ -24,11 +24,10 @@
     border-radius: 5px;
     box-shadow: 3px 3px 3px rgb(0 0 0 / 10%);
     font-size: 14px;
-    max-width: 200px;
+    /*max-width: 200px;*/
     padding: 6px 8px;
     position: absolute;
-    margin-left: 20px;
-    transform: translateY(-50%);
+    /*transform: translateY(-50%);*/
 }
 .tooltip p {
   margin: 2px 0;

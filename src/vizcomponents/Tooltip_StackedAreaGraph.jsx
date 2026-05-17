@@ -3,7 +3,7 @@ export const Tooltip = ({ interactionData }) => {
     return null;
   }
 
-  const { xPos, yPos, name, xValue, height} = interactionData;
+  const { xPos, yPos, name, xValue, height, placement} = interactionData;
 
   return (
     <div
@@ -11,6 +11,8 @@ export const Tooltip = ({ interactionData }) => {
       style={{
         left: xPos,
         top: yPos,
+        transform:
+          placement === "left" ? "translateX(-120%)" : "translateX(20%)",
       }}
     >
       <b>{name}</b>

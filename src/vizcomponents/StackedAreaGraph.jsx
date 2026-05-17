@@ -90,10 +90,11 @@ const StackedAreaGraph = ({ width, height, data, columns, colors, MARGIN, hovere
 
     setInteractionData({
       xPos: xScale(nearest.year),
-      yPos: 100,
+      yPos: boundsHeight/3,
       name: nearest.year,
       xValue: nearest.year,
       height: boundsHeight,
+      placement: xScale(nearest.year) < boundsWidth / 2 ? "right" : "left",
     });
   };
 
