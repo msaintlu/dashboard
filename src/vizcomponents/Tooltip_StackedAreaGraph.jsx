@@ -12,7 +12,7 @@ export const Tooltip = ({ interactionData }) => {
         left: xPos,
         top: 0,
         transform:
-          placement === "left" ? "translateX(-120%)" : "translateX(20%)",
+          placement === "left" ? "translateX(-110%)" : "translateX(10%)",
       }}
     >
       <div className="tooltip-title">
