@@ -9,9 +9,9 @@ import { useState } from "react";
 const MARGIN = { top: 50, right: 0, bottom: 70, left: 50 };
 
 const colors = {
-  coal: "#6C6460", // Dim grey | "#3F3F3B", // Charcoal brown | #1F1F1D", // Carbon Black
-  oil: "#8C827D", // Rosy granite
-  gas: "#A9A19E", // Silver
+  coal:  "#0C0909", // "#1F1F1D", // Carbon Black // "#6C6460", // Dim grey | 
+  oil: "#463835", // "#7A4419", // "#54544F", // Charcoal brown | // #8C827D", // Rosy granite
+  gas: "#8A716A", // "#909CC2", // "#A9A19E", // Silver
   nuclear: "#392654", // Dark amethyst | "#F5B0CB", // Blush pop | "#812255", // Dark raspberry | "#711E4A", // Crimson violet
   hydro: "#1A634F", // Emerald depths | "#246A51", // Dark emerald | "#1A4C3A", // Pine teal
   solar: "#228168", //"#2F8968", // "#2A7A5C", // Jungle teal
@@ -89,7 +89,6 @@ function App() {
           <div className="top-row">
             <div className="top-left" style={containerMargin}>
               <p className="panel-title">World energy mix in 2024</p>
-              {sep}
               <ResponsiveDonut
                 data={worldData2024}
                 columns={energyTypes}
@@ -102,7 +101,6 @@ function App() {
             </div>
             <div className="top-right" style={containerMargin}>
               <p className="panel-title">World non-fossil energy evolution</p>
-              {sep}
               <ResponsiveLineChart
                 data={worldData}
                 columns={nonFossilEnergyTypes}
@@ -118,7 +116,6 @@ function App() {
           {/* Ligne du bas (50% de la hauteur) */}
           <div className="bottom-row" style={containerMargin}>
             <p className="panel-title">World energy mix evolution</p>
-            {sep}
             <ResponsiveStackedAreaGraph
               data={worldData}
               columns={energyTypes}
@@ -133,7 +130,6 @@ function App() {
         {/* Colonne de droite (33%) */}
         <div className="right-column" style={containerMargin}>
           <p className="panel-title">Energy mix in 2024</p>
-          {sep}
           <ResponsivePercentStackedBarchart
             data={data2024}
             columns={energyTypes}

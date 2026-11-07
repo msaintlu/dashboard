@@ -6,7 +6,7 @@
 @layer base {
   html, body {
     font-family: 'Nunito Sans', sans-serif;
-    font-weight: 350; /* Appliqué à tout le document */
+    font-weight: 400; /* Appliqué à tout le document */
     color: rgba(0, 0, 0, 0.87);
     font-variation-settings: "wdth" 100, "YTLC" 500;
   }
@@ -14,6 +14,7 @@
 
 .panel-title{
   font-size: 22px;
+  font-weight: 600;
   margin-top: 0px;
   margin-bottom: 5px;
 }
