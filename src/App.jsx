@@ -1,7 +1,10 @@
 import { data } from "./data";
 import { ResponsiveLineChart } from "./vizcomponents/Linechart";
 import { ResponsiveStackedAreaGraph } from "./vizcomponents/StackedAreaGraph";
-import { ResponsivePercentStackedBarchart } from "./vizcomponents/PercentStackedBarchart";
+import {
+  normalizeEnergyData,
+  ResponsivePercentStackedBarchart,
+} from "./vizcomponents/PercentStackedBarchart";
 import { ResponsiveDonut } from "./vizcomponents/Donut";
 import { useState } from "react";
 
@@ -52,6 +55,22 @@ const worldData2024 = worldData.filter(d => d.year === 2024)[0]; // [0] bc only 
 function App() {
 
   const [hoveredEner, setHoveredEner] = useState(null);
+  const [sortBy, setSortBy] = useState("default");
+  const normalizedData2024 = normalizeEnergyData(data2024, energyTypes);
+  const energyShares = new Map(
+    normalizedData2024.map((item) => [item.country, item])
+  );
+  const sortedData2024 = [...data2024].sort((a, b) => {
+    if (sortBy === "default") {
+      if (a.country === "World") return -1;
+      if (b.country === "World") return 1;
+      return a.country.localeCompare(b.country);
+    }
+
+    // Compare the same normalized percentages displayed by the chart.
+    return energyShares.get(b.country)[sortBy] - energyShares.get(a.country)[sortBy]
+      || a.country.localeCompare(b.country);
+  });
 
   return (
     <div className="dashboard">
@@ -111,9 +130,53 @@ function App() {
 
         <section className="chart-panel country-panel">
           <h2 className="panel-title">Energy mix in 2024</h2>
+          <div className="sort-control">
+            <span>Sort by</span>
+            <details className="sort-menu">
+              <summary>                     
+                <span
+                  className="energy-color-mark"
+                  style={{ backgroundColor: colors[sortBy] }}
+                />
+                {sortBy === "default" ? "Default" : energyLabels[sortBy]}
+              </summary>
+              <div className="sort-menu-options" aria-label="Sort by">
+                <button
+                  type="button"
+                  className="sort-menu-option"
+                  aria-pressed={sortBy === "default"}
+                  onClick={(event) => {
+                    setSortBy("default");
+                    event.currentTarget.closest("details").open = false;
+                  }}
+                >
+                  Default
+                </button>
+                {energyTypes.map((energy) => (
+                  <button
+                    key={energy}
+                    type="button"
+                    className="sort-menu-option"
+                    aria-pressed={sortBy === energy}
+                    onClick={(event) => {
+                      setSortBy(energy);
+                      event.currentTarget.closest("details").open = false;
+                    }}
+                  >
+                    <span
+                      className="energy-color-mark"
+                      style={{ backgroundColor: colors[energy] }}
+                      aria-hidden="true"
+                    />
+                    {energyLabels[energy]}
+                  </button>
+                ))}
+              </div>
+            </details>
+          </div>
           <div className="panel-chart">
             <ResponsivePercentStackedBarchart
-              data={data2024}
+              data={sortedData2024}
               columns={energyTypes}
               colors={colors}
               MARGIN={{ top: 0, right: 0, bottom: 0, left: 150 }}

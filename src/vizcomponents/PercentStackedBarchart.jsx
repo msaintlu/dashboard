@@ -2,6 +2,13 @@ import * as d3 from "d3";
 import {useRef} from "react";
 import {useDimensions} from "./useDimensions";
 
+// Keep sorting and bar widths based on the same per-country percentage values.
+export const normalizeEnergyData = (data, columns) => data.map(d => {
+  const total = d3.sum(columns, col => d[col]);
+  const normalizedItem = { ...d };
+  columns.forEach(col => { normalizedItem[col] = (d[col] / total) * 100; });
+  return normalizedItem;
+});
 
 export const ResponsivePercentStackedBarchart = (props) => {
   const chartRef = useRef(null);
@@ -22,13 +29,7 @@ const PercentStackedBarchart = ({ width, height, data, columns, colors, MARGIN, 
   const boundsWidth = width - MARGIN.left - MARGIN.right;
   const boundsHeight = height - MARGIN.top - MARGIN.bottom;
 
-  // Normalize the data
-  const normalizedData = data.map(d => {
-    const total = d3.sum(columns, col => d[col]);
-    const normalizedItem = { ...d };
-    columns.forEach(col => {  normalizedItem[col] = (d[col] / total) * 100; });
-    return normalizedItem;
-  });   
+  const normalizedData = normalizeEnergyData(data, columns);
 
   // Stack the data
   const stackSeries = d3.stack().keys(columns)
