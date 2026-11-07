@@ -6,7 +6,7 @@ import { ResponsiveDonut } from "./vizcomponents/Donut";
 import { useState } from "react";
 
 
-const MARGIN = { top: 50, right: 0, bottom: 70, left: 50 };
+const MARGIN = { top: 0, right: 0, bottom: 25, left: 35 };
 
 const colors = {
   coal:  "#0C0909", // "#1F1F1D", // Carbon Black // "#6C6460", // Dim grey | 
@@ -49,101 +49,84 @@ const worldData = dataPWh.filter(d => d.country === "World");
 const data2024 = data.filter(d => d.year === 2024);
 const worldData2024 = worldData.filter(d => d.year === 2024)[0]; // [0] bc only one line
 
-// Layout stuff
-
-const sep = (
-  <div
-    style={{
-      height: 1,
-      backgroundColor: "lightgrey",
-    }}
-  />
-);
-
-const containerMargin = {marginLeft:50, marginTop: 0, marginBottom:50, marginRight:0}
-
 function App() {
 
   const [hoveredEner, setHoveredEner] = useState(null);
 
   return (
-    <>
-      {/* Title */}
-      <div
-        style={{
-          height: 70,
-          marginLeft: containerMargin.marginLeft,
-          marginTop: 20,
-          marginBottom: 15,
-        }}
-      >
-        <p className="panel-title" style={{ fontSize: 40 }}>
+    <div className="dashboard">
+      <header className="dashboard-header">
+        <h1 className="dashboard-title">
           World Energy Mix
-        </p>
-      </div>
+        </h1>
+      </header>
 
-      <div className="main-container">
-        {/* Colonne de gauche (66%) */}
-        <div className="left-column">
-          {/* Ligne du haut (50% de la hauteur) */}
-          <div className="top-row">
-            <div className="top-left" style={containerMargin}>
-              <p className="panel-title">World energy mix in 2024</p>
+      <main className="dashboard-layout">
+        <div className="world-panels">
+          <section className="chart-panel donut-panel">
+            <h2 className="panel-title">World energy mix in 2024</h2>
+            <div className="panel-chart">
               <ResponsiveDonut
                 data={worldData2024}
                 columns={energyTypes}
                 colors={colors}
-                MARGIN={{ top: 70, right: 30, bottom: 70, left: 50 }}
+                MARGIN={{ top: 45, right: 35, bottom: 15, left: 35 }}
                 labels={energyLabels}
                 hoveredCol={hoveredEner}
                 setHoveredCol={setHoveredEner}
               />
             </div>
-            <div className="top-right" style={containerMargin}>
-              <p className="panel-title">World non-fossil energy evolution</p>
+          </section>
+
+          <section className="chart-panel line-panel">
+            <h2 className="panel-title">World non-fossil energy evolution</h2>
+            <div className="panel-chart">
               <ResponsiveLineChart
                 data={worldData}
                 columns={nonFossilEnergyTypes}
                 colors={colors}
-                MARGIN={MARGIN}
+                MARGIN={{ top: 12, right: 0, bottom: 25, left: 35 }}
                 labels={energyLabels}
                 hoveredCol={hoveredEner}
                 setHoveredCol={setHoveredEner}
               />
             </div>
-          </div>
+          </section>
 
-          {/* Ligne du bas (50% de la hauteur) */}
-          <div className="bottom-row" style={containerMargin}>
-            <p className="panel-title">World energy mix evolution</p>
-            <ResponsiveStackedAreaGraph
-              data={worldData}
+          <section className="chart-panel area-panel">
+            <h2 className="panel-title">World energy mix evolution</h2>
+            <div className="panel-chart">
+              <ResponsiveStackedAreaGraph
+                data={worldData}
+                columns={energyTypes}
+                colors={colors}
+                MARGIN={MARGIN}
+                hoveredCol={hoveredEner}
+                setHoveredCol={setHoveredEner}
+                labels={energyLabels}
+              />
+            </div>
+          </section>
+        </div>
+
+        <section className="chart-panel country-panel">
+          <h2 className="panel-title">Energy mix in 2024</h2>
+          <div className="panel-chart">
+            <ResponsivePercentStackedBarchart
+              data={data2024}
               columns={energyTypes}
               colors={colors}
-              MARGIN={MARGIN}
+              MARGIN={{ top: 0, right: 0, bottom: 0, left: 150 }}
               hoveredCol={hoveredEner}
               setHoveredCol={setHoveredEner}
-              labels={energyLabels}
             />
           </div>
-        </div>
-        {/* Colonne de droite (33%) */}
-        <div className="right-column" style={containerMargin}>
-          <p className="panel-title">Energy mix in 2024</p>
-          <ResponsivePercentStackedBarchart
-            data={data2024}
-            columns={energyTypes}
-            colors={colors}
-            MARGIN={{ top: 20, right: 0, bottom: 70, left: 160 }}
-            hoveredCol={hoveredEner}
-            setHoveredCol={setHoveredEner}
-          />
-        </div>
-      </div>
-      <div style={{ height: 70, marginLeft: 20, marginTop: 30 }}>
+        </section>
+      </main>
+      <footer className="dashboard-footer">
         <p>Source: Our World in Data</p>
-      </div>
-    </>
+      </footer>
+    </div>
   );
 }
 

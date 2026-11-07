@@ -20,7 +20,7 @@ export const ResponsiveLineChart = (props) => {
 
 const LineChart = ({ width, height, data, columns, colors, MARGIN, labels, hoveredCol, setHoveredCol }) => {
 
-  const marginRight = labels ? 150 : MARGIN.right;
+  const marginRight = labels ? 128 : MARGIN.right;
 
   const boundsWidth = width - MARGIN.left - marginRight;
   const boundsHeight = height - MARGIN.top - MARGIN.bottom;

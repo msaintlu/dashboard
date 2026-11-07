@@ -12,7 +12,7 @@ export const AxisLeft = (
             {yScale.ticks(numberOfTicksTarget).map((value) => (
                 <g key={value} transform={`translate(0, ${yScale(value)})`}>
                     {/* Grid line */}
-                    {grid && ( <line x2={boundsWidth} stroke="lightgrey" opacity={0.5} /> )}
+                    {grid && ( <line x2={boundsWidth} stroke="grey" opacity={0.5} /> )}
                     {/* Tick */}
                     {axisLine && ( <line x2={- TICK_LENGTH} stroke="grey" /> )}
                     <text
