@@ -1,6 +1,7 @@
 import * as d3 from "d3";
-import {useRef} from "react";
+import {useRef, useState} from "react";
 import {useDimensions} from "./useDimensions";
+import {Tooltip_PercentStackedBarchart} from "./Tooltip_PercentStackedBarchart";
 
 // Keep sorting and bar widths based on the same per-country percentage values.
 export const normalizeEnergyData = (data, columns) => data.map(d => {
@@ -24,10 +25,11 @@ export const ResponsivePercentStackedBarchart = (props) => {
   );
 };
 
-const PercentStackedBarchart = ({ width, height, data, columns, colors, MARGIN, hoveredCol, setHoveredCol }) => {
+const PercentStackedBarchart = ({ width, height, data, historyData, columns, colors, MARGIN, hoveredCol, setHoveredCol }) => {
 
   const boundsWidth = width - MARGIN.left - MARGIN.right;
   const boundsHeight = height - MARGIN.top - MARGIN.bottom;
+  const [interactionData, setInteractionData] = useState(null);
 
   const normalizedData = normalizeEnergyData(data, columns);
 
@@ -54,6 +56,7 @@ const PercentStackedBarchart = ({ width, height, data, columns, colors, MARGIN, 
     .paddingInner(0)
     .paddingOuter(0);
 
+
   // Build the bars (segments)
   const allBars = series.map((serie, i) => {   // series is an array, one item per energy type here
     return serie.map((
@@ -77,8 +80,29 @@ const PercentStackedBarchart = ({ width, height, data, columns, colors, MARGIN, 
           width={xScale(segment[1]) - xScale(segment[0])}
           height={yScaleHover.bandwidth()}
           fill="transparent"
-          /*onMouseEnter={() => setHoveredCol(serie.key)}
-          onMouseLeave={() => setHoveredCol(null)}*/
+          onMouseEnter={() => {
+            setHoveredCol(serie.key);
+            const xPos = xScale((segment[0] + segment[1]) / 2);
+            const yPos = yScale(segment.data.country) + yScale.bandwidth() / 2;
+            setInteractionData({
+              xPos,
+              yPos,
+              energyType: serie.key,
+              country: segment.data.country,
+              placement: yPos + 150 > boundsHeight ? "above" : "below",
+              // Garder uniquement la série brute du pays survolé, déjà exprimée en PWh.
+              historyData: historyData
+                .filter((item) => item.country === segment.data.country)
+                .sort((a, b) => a.year - b.year),
+                colors,
+              margin: MARGIN,
+              chartWidth: width,
+            });
+          }}
+          onMouseLeave={() => {
+            setHoveredCol(null);
+            setInteractionData(null);
+          }}
         />
         {i === 0 && (
           <text
@@ -98,11 +122,22 @@ const PercentStackedBarchart = ({ width, height, data, columns, colors, MARGIN, 
   });
 
   return (
-    <svg width={width} height={height}>
-      <g transform={`translate(${MARGIN.left},${MARGIN.top})`}>
-        {/* render all the <path>*/}
-        {allBars}
-      </g>
-    </svg>
+    <div style={{ position: "relative"}}>
+      <svg width={width} height={height}>
+        <g transform={`translate(${MARGIN.left},${MARGIN.top})`}>
+          {allBars}
+        </g>
+      </svg>
+      {/* Tooltip layer */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          pointerEvents: "none",
+        }}
+      >
+        <Tooltip_PercentStackedBarchart interactionData={interactionData} />
+      </div>
+    </div>
   );
 };

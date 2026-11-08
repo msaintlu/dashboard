@@ -56,6 +56,8 @@ function App() {
 
   const [hoveredEner, setHoveredEner] = useState(null);
   const [sortBy, setSortBy] = useState("default");
+
+  // Normalized data for the percent stacked barchart
   const normalizedData2024 = normalizeEnergyData(data2024, energyTypes);
   const energyShares = new Map(
     normalizedData2024.map((item) => [item.country, item])
@@ -177,6 +179,7 @@ function App() {
           <div className="panel-chart">
             <ResponsivePercentStackedBarchart
               data={sortedData2024}
+              historyData={dataPWh}
               columns={energyTypes}
               colors={colors}
               MARGIN={{ top: 0, right: 0, bottom: 0, left: 150 }}

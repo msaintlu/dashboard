@@ -18,8 +18,8 @@ export const Tooltip = ({ interactionData }) => {
       <div className="tooltip-title">
         <b>{name}</b>
       </div>
-      {yCats.map((c, i) => (
-        <div className="tooltip-content" style={{ borderColor: colors[c] }}>
+      {yCats.map((c) => (
+        <div key={c} className="tooltip-content" style={{ borderColor: colors[c] }}>
           <div className="tooltip-row">
             <span> {labels[c]} </span>
             <b> {yValues[0][c].percentage + " %"} </b>

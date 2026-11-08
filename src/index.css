@@ -211,6 +211,11 @@
     position: absolute;
     /*transform: translateY(-50%);*/
 }
+.percent-stacked-tooltip {
+  box-sizing: border-box;
+  width: 260px;
+  opacity: 0.98;
+}
 .tooltip-title {
   font-size: 14px;
   margin-bottom: 8px;
@@ -219,6 +224,10 @@
     border-left: solid 4px;
     padding-left: 8px;
     padding-top: 0px;
+}
+.tooltip-content-no-marker {
+  border-left: 0;
+  padding-left: 0;
 }
 .tooltip-row {
     display: flex;
