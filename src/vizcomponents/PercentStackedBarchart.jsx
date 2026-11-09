@@ -72,7 +72,7 @@ const PercentStackedBarchart = ({ width, height, data, historyData, columns, col
           x={xScale(segment[0])}
           y={yScale(segment.data.country)}
           width={xScale(segment[1]) - xScale(segment[0])}
-          height={yScale.bandwidth()}
+          height={yScale.bandwidth()+1}
           fill={colors[serie.key] || "black"}
           opacity={hoveredCol===null || hoveredCol===serie.key ? 1 : 0.2}
         />
