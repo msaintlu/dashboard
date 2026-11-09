@@ -87,6 +87,8 @@ const PercentStackedBarchart = ({ width, height, data, historyData, columns, col
             setInteractionData({
               xPos,
               yPos,
+              barHeight: yScale.bandwidth(),
+              barGap: yScale.step() - yScale.bandwidth(),
               energyType: serie.key,
               country: segment.data.country,
               placement: yPos + 150 > boundsHeight ? "above" : "below",

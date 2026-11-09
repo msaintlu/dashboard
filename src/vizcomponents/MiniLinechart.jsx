@@ -1,51 +1,47 @@
 import * as d3 from "d3";
 
-export const MiniLinechart = ({ width, height, data, energyType, color }) => {
+export const MiniLinechart = ({ width, height, data, energyType, color, MARGIN }) => {
   if (data.length === 0) {
     return null;
   }
 
-  const boundsHeight = height - 20;
-  const [firstYear, lastYear] = d3.extent(data, (item) => item.year);
-  const maxValue = d3.max(data, (item) => item[energyType]) || 0;
-  const xDomain = firstYear === lastYear
-    ? [firstYear - 1, lastYear + 1]
-    : [firstYear, lastYear];
+  const boundsHeight = height - MARGIN.bottom - MARGIN.top;
+  const boundsWidth = width
+
+  const [firstYear, lastYear] = d3.extent(data, (d) => d.year);
+  const maxValue = d3.max(data, (d) => d[energyType]);
+
   const xScale = d3.scaleLinear()
-    .domain(xDomain)
-    .range([4, width - 4]);
+    .domain([firstYear, lastYear])
+    .range([0, boundsWidth]);
+
   const yScale = d3.scaleLinear()
-    .domain([0, maxValue || 1])
-    .nice()
-    .range([boundsHeight, 4]);
+    .domain([0, maxValue])
+    .range([boundsHeight, 0]);
+
   const linePath = d3.line()
-    .x((item) => xScale(item.year))
-    .y((item) => yScale(item[energyType]))(data);
+    .x((d) => xScale(d.year))
+    .y((d) => yScale(d[energyType]))(data);
 
   return (
     <svg
       width={width}
       height={height}
-      role="img"
-      aria-label={`Utilisation de ${energyType} en PWh de ${firstYear} à ${lastYear}`}
     >
-      <g>
-        {/* Un axe horizontal avec uniquement la première et la dernière année. */}
+      <g transform={`translate(0,${MARGIN.top})`}>
         <path
           d={linePath}
           stroke={color}
           strokeWidth={2}
           fill="none"
         />
-        <line x1={4} x2={width - 4} y1={boundsHeight} y2={boundsHeight} stroke="grey" strokeWidth={0.5} />
-        <text x={4} y={height - 3} fontSize={11} fill="grey" textAnchor="start">
+        <line x2={boundsWidth} y1={boundsHeight} y2={boundsHeight} stroke="grey" strokeWidth={0.5} />
+        <text x={0} y={height - 3} fontSize={11} fill="grey" textAnchor="start">
           {firstYear}
         </text>
-        {lastYear !== firstYear && (
-          <text x={width - 4} y={height - 3} fontSize={11} fill="grey" textAnchor="end">
-            {lastYear}
-          </text>
-        )}
+        <text x={boundsWidth} y={height - 3} fontSize={11} fill="grey" textAnchor="end">
+          {lastYear}
+        </text>
       </g>
     </svg>
   );
