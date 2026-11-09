@@ -49,7 +49,7 @@ const PercentStackedBarchart = ({ width, height, data, historyData, columns, col
     .scaleBand()
     .domain(data.map((d) => d.country))
     .range([0, boundsHeight])
-    .paddingInner(0.1)
+    .paddingInner(0)
     .paddingOuter(0);
 
   const yScaleHover = d3
@@ -72,7 +72,7 @@ const PercentStackedBarchart = ({ width, height, data, historyData, columns, col
           x={xScale(segment[0])}
           y={yScale(segment.data.country)}
           width={xScale(segment[1]) - xScale(segment[0])}
-          height={yScale.bandwidth()+1}
+          height={yScale.bandwidth()}
           fill={colors[serie.key] || "black"}
           opacity={hoveredCol===null || hoveredCol===serie.key ? 1 : 0.2}
         />
