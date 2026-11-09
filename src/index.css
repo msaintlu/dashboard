@@ -214,6 +214,7 @@
 .percent-stacked-tooltip {
   box-sizing: border-box;
   opacity: 0.95;
+  min-width: 100px;
 }
 .percent-stacked-tooltip::after {
   content: "";

@@ -19,7 +19,7 @@ export const Tooltip_PercentStackedBarchart = ({ interactionData }) => {
     chartWidth,
   } = interactionData;
 
-  const tooltipWidth = 260;
+  const tooltipWidth = 190;
   const tooltipPaddingLeft = 12;
   const anchorX = xPos + margin.left;
   const maxLeft = Math.max(margin.left, chartWidth - tooltipWidth);
