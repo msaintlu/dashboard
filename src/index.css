@@ -16,7 +16,7 @@
     min-height: 100%;
     margin: 0;
     font-family: 'Nunito Sans', sans-serif;
-    font-weight: 500; /* Appliqué à tout le document */
+    font-weight: 400; /* Appliqué à tout le document */
     color: rgba(0, 0, 0, 0.87);
     font-variation-settings: "wdth" 100, "YTLC" 500;
     background: #DCD4D1;

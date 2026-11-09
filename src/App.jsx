@@ -91,7 +91,7 @@ function App() {
                 data={worldData2024}
                 columns={energyTypes}
                 colors={colors}
-                MARGIN={{ top: 45, right: 35, bottom: 15, left: 35 }}
+                MARGIN={{ top: 45, right: 50, bottom: 15, left: 50 }}
                 labels={energyLabels}
                 hoveredCol={hoveredEner}
                 setHoveredCol={setHoveredEner}
